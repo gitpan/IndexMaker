@@ -4,13 +4,13 @@
 # indexmaker -- a perl script to make index.html from PDF files,
 #               HTML files, VRML files and other files.
 #
-# by Fabrizio Pivari <pivari@geocities.com> 25 April 1998
+# by Fabrizio Pivari <pivari@geocities.com> 04 June 1998
 #
 # Copy, use, and redistribute freely, but don't take my name off it and
 # clearly mark an altered version.  Fixes and enhancements cheerfully 
 # accepted.
 #
-# This is version 6.6.
+# This is version 6.7.
 #
 use strict;
 use Getopt::Long;
@@ -25,6 +25,7 @@ use LWP::UserAgent;
 my $version="6.6";
 my $configure="indexmaker.cfg";
 my $output="index.html";
+my $input="";
 my $verbose="";
 my $help="";
 my $recursive=""; my $match="";
@@ -32,15 +33,17 @@ my @elem; my %option; my $elem="";
 
 do GetOptions("configure=s" => \$configure,
               "output=s"    => \$output,
+              "input=s"     => \$input,
               "recursive=s" => \$recursive,
               "match=s"     => \$match,
               "help"        => \$help,
               "verbose"     => \$verbose) || printusage() ;
-@elem=("OUTPUT_file","proxy","YOUR_email","META_AuthorName","META_AuthorMail",
-       "META_Keywords","META_Description","TITLE_title","GIF_pdficon",
-       "GIF_getacrobat","PDF_extensions","HTML_extensions","VRML_extensions",
-       "Graphic_extensions","Compress_extensions");
+@elem=("OUTPUT_file","INPUT_file","proxy","YOUR_email","META_AuthorName",
+       "META_AuthorMail","META_Keywords","META_Description","TITLE_title",
+       "GIF_pdficon","GIF_getacrobat","PDF_extensions","HTML_extensions",
+       "VRML_extensions","Graphic_extensions","Compress_extensions");
 %option=(OUTPUT_file         => 'index.html',
+         INPUT_file          => '',
          proxy               => '',
          YOUR_email          => 'yourname@yourhost.com',
          META_AuthorName     => 'Fabrizio Pivari',
@@ -59,6 +62,7 @@ do GetOptions("configure=s" => \$configure,
 $help and printusage();
 ($verbose && $configure) and print "I'm using $configure like configuration file\n";
 ($verbose && $output) and print "I'm using $output like output file\n";
+($verbose && $input) and print "I'm using $input like input file\n";
 open (CNF, "$configure") || die "indexmaker: couldn't open configuration file $configure\n";
 while (<CNF>) {
   s/\t/ /g;        #replace tabs by space
@@ -89,6 +93,7 @@ if ($recursive) {
   }
 
 $output and $option{'OUTPUT_file'}=$output;
+$input  and $option{'INPUT_file'}=$input;
 
 my $HTMLFILES       = ""; my $PDFFILES        = ""; my $VRMLFILES       = "";
 my $GRAPHICFILES    = ""; my $COMPRESSEDFILES = ""; my $OTHERS          = "";
@@ -108,6 +113,17 @@ print OUT <<EOF;
 <BODY BGCOLOR="\#ffffff">
 <H1>$option{'TITLE_title'}</H1>
 EOF
+
+if ($option{'INPUT_file'}) {
+  my @INURL; my $inurl="";
+  open(IN, "$option{'INPUT_file'}")
+      || die("indexmaker: couldn't open input file $option{'INPUT_file'}\n");
+  while (<IN>) {
+    push @INURL,$_;
+    }
+  close(IN);
+  foreach $inurl (@INURL) {push @ARGV,$inurl;}
+  }
 
 my @PDFext; my @HTMLext; my @VRMLext; my @Graphicext; my @Compressext;
 my $x=""; my $file=""; my $tmp=""; my $i; my @URL;
@@ -345,6 +361,7 @@ where options include:
                                  (require -recursive option)
     -configure file              default indexmaker.cfg
     -output    file              default index.html
+    -input     file              a collection of input files and urls
 
 list:
     with list you can use metacharacters and relative and absolute path name
