@@ -4,20 +4,20 @@
 # indexmaker -- a perl script to make index.html from PDF files,
 #               HTML files, VRML files and other files.
 #
-# by Fabrizio Pivari <pivari@geocities.com> 1 March 1998
+# by Fabrizio Pivari <pivari@geocities.com> 8 March 1998
 #
 # Copy, use, and redistribute freely, but don't take my name off it and
 # clearly mark an altered version.  Fixes and enhancements cheerfully 
 # accepted.
 #
-# This is version 5.0.
+# This is version 5.1.
 #
 #use strict;
 use Getopt::Long;
 # PDF library v. 1.04 http://www.geocities.com/CapeCanaveral/Hangar/4794/
 use PDF;
 
-my $version="5.0";
+my $version="5.1";
 my $configure="indexmaker.cfg";
 my $output="index.html";
 my $verbose="";
@@ -62,7 +62,7 @@ my $GRAPHICFILES    = ""; my $COMPRESSEDFILES = ""; my $OTHERS          = "";
 open(OUT, ">$option{'OUTPUT_file'}")
     || die("indexmaker: couldn't open output file $option{'OUTPUT_file'}\n");
 print OUT <<EOF;
-<!doctype HTML public "-//W3O//DTD W3 HTML 3.2//EN">
+<!doctype HTML public "-//W3C//DTD HTML 3.2//EN">
 <!-- Made by IndexMaker $version written by Fabrizio Pivari (pivari\@geocities.com) -->
 <HTML>
 <HEAD>
@@ -110,6 +110,7 @@ NEW: foreach $x (@ARGV) {
        $verbose and print "Analizing others         : $file\n";
        }
      }
+else {printusage();}
 
 $HTMLFILES and print OUT "<H2>HTML files</H2>\n<UL>\n$HTMLFILES\n<\/UL>\n";
 if ($PDFFILES) {

@@ -1,9 +1,6 @@
 IndexMaker is a PERL script to make an index.html file from PDF files,
 HTML files, VRML files and other files.
-From version 5.0 IndexMaker works with PERL 5.x.
-
-The modules you need:
-PDF library 1.04 http://www.geocities.com/CapeCanaveral/Hangar/4794/
+It should work with PERL 4.x and 5.x.
 
 This is the sintax
 

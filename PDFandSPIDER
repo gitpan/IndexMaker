@@ -1,0 +1,14 @@
+When Acrobat appeared, I made a web with many PDF documents. Some of these
+were very big, so I splited them in many little PDF files (for ex. one file for
+every chapter) and the first use the URL method to link the others (like
+in HTML files)
+What's the problem?
+Now many Intranet search engine support PDF format but the spider (crawler) can
+only find the PDF files linked directly by an HTML files.
+The other PDF files are HTML-orphans.
+How can you resolve the problem?
+1) You can use a different approach like byteserving method
+   (http://www.adobe.com/prodindex/acrobat/byteserve.html). With byteserving
+   method you can maintain big PDF files.
+2) You can create an ad hoc HTML file for your PDF files
+3) IndexMaker can create for you an HTML file for your PDF files

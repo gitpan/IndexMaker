@@ -4,23 +4,83 @@ files designed by Fabrizio Pivari (Pivari@geocities.com) on 02/22/98-->
 <HTML>
 <HEAD>
 <META Name="Author" Content="Fabrizio Pivari">
-<TITLE>History of IndexMaker 5.0</TITLE>
+<TITLE>History of IndexMaker 5.1</TITLE>
 </HEAD>
 
 <BODY BGCOLOR="#ffffff">
-<H1>History of IndexMaker 5.0</H1>
-What's new with version 1.1:
+<H1>History of IndexMaker 5.1</H1>
+
+03/08/98 Version 5.1:
 <UL>
-<LI>Bug fix: now /Author field can be placed also after the first /Title field
-<LI>Special Characters: &amp -&gt &ampamp, &gt -&gt &ampgt, &lt -&gt &amplt Thanks to 
-<A HREF="mailto:A.Gale@RD.tei.ericsson.se">Gale Andrew</A>
+<LI>Without parameters, the help is print</LI>
+<LI>Added PDFandSPIDER document</LI>
 </UL>
 
-What's new with version 2.0:
+03/01/98 Version 5.0:
 <UL>
-<LI>New input files format: HTML, OTHER
+<LI>The code was rewrited in PERL 5.xxx mode</LI>
+<LI>Now IndexMaker doesn't support directly PDF, it uses the new
+<A HREF="http://www.geocities.com/CapeCanaveral/Hangar/4794/">PDF libray v.1.04</A>
+by Antonio Rosella</LI>
 </UL>
 
+02/22/98 Version 4.3:
+<UL>
+<LI>
+In the configure file now it's possible to describe the extensions of the
+categories  HTML files, PDF files, VRML files, Graphic files, Compressed files,
+Others</LI>
+</UL>
+
+02/15/98 Version 4.2:
+<UL>
+<LI>Bugfixe: now the PDF fields /Author, /Title, /Subject can include the char '
+)'</LI>
+<LI>Added README in tests directory</LI>
+</UL>
+
+02/07/98 Version 4.1:
+<UL>
+<LI>Added the parameter output file (Default index.html)</LI>
+<LI>Added the parameters for GIF files in indexmaker.cfg (idea of 
+<A HREF="mailto:Bertrand.Decouty@irisa.fr">Bertrand Decouty)</A></LI>
+</UL>
+
+12/19/97 Version 4.0:
+<UL>
+<LI>Added the check to /Subject field in PDF files
+</LI>
+<LI>Now /Author, /Title, /Subject fields can be multiline fields</LI>
+<LI>Added a configuration file: option -c file (Default indexmaker.cfg)</LI>
+</UL>
+
+12/12/97 Version 3.3:
+<UL>
+<LI>In HTML files now the program searchs the META Description and Author fields</LI>
+<LI>Added docs/HTML_META.notes</LI>
+<LI>Added tests directory</LI>
+</UL>
+
+12/05/97 Version 3.2:
+<UL>
+<LI>New input file format: VRML v 1.0 (Info node), VRML v 2.0 and 97
+(WorldInfo node field info and title)</LI>
+<LI>Added docs/PDF.notes and docs/VRML.notes</LI>
+</UL>
+
+11/28/97 Version 3.1:
+<UL>
+<LI>Verbose option</LI>
+</UL>
+</UL>
+
+11/20/97 Version 3.0:
+<UL>
+<LI>Every file is groupped in 5 categories: HTML files, PDF files, Graphic
+files, Compressed files, Others</LI>
+</UL>
+
+11/15/97 Version 2.1:
 <UL>
 <LI>If HTML and PDF files haven't a description the program uses the file name</
 LI>
@@ -32,68 +92,20 @@ you do not deal with multiple same letters in one string (add g to
 end of s/x/&amp;xyz/)</LI>
 </UL>
 
-What's new with version 3.0:
+11/01/97 Version 2.0:
 <UL>
-<LI>Every file is groupped in 5 categories: HTML files, PDF files, Graphic
-files, Compressed files, Others</LI>
+<LI>New input files format: HTML, OTHER
 </UL>
 
-What's new with version 3.1:
+10/20/97 Version 1.1:
 <UL>
-<LI>Verbose option</LI>
+<LI>Bug fix: now /Author field can be placed also after the first /Title field
+<LI>Special Characters: &amp -&gt &ampamp, &gt -&gt &ampgt, &lt -&gt &amplt Thanks to 
+<A HREF="mailto:A.Gale@RD.tei.ericsson.se">Gale Andrew</A>
 </UL>
 
-What's new with version 3.2:
-<UL>
-<LI>New input file format: VRML v 1.0 (Info node), VRML v 2.0 and 97
-(WorldInfo node field info and title)</LI>
-<LI>Added docs/PDF.notes and docs/VRML.notes</LI>
-</UL>
-
-What's new with version 3.3:
-<UL>
-<LI>In HTML files now the program searchs the META Description and Author fields</LI>
-<LI>Added docs/HTML_META.notes</LI>
-<LI>Added tests directory</LI>
-</UL>
-
-What's new with version 4.0:
-<UL>
-<LI>Added the check to /Subject field in PDF files
-</LI>
-<LI>Now /Author, /Title, /Subject fields can be multiline fields</LI>
-<LI>Added a configuration file: option -c file (Default indexmaker.cfg)</LI>
-</UL>
-
-What's new with version 4.1:
-<UL>
-<LI>Added the parameter output file (Default index.html)</LI>
-<LI>Added the parameters for GIF files in indexmaker.cfg (idea of 
-<A HREF="mailto:Bertrand.Decouty@irisa.fr">Bertrand Decouty)</A></LI>
-</UL>
-
-What's new with version 4.2:
-<UL>
-<LI>Bugfixe: now the PDF fields /Author, /Title, /Subject can include the char '
-)'</LI>
-<LI>Added README in tests directory</LI>
-</UL>
-
-What's new with version 4.3:
-<UL>
-<LI>
-In the configure file now it's possible to describe the extensions of the
-categories  HTML files, PDF files, VRML files, Graphic files, Compressed files,
-Others</LI>
-</UL>
-
-What's new with version 5.0:
-<LI>The code was rewrited in PERL 5.xxx mode</LI>
-<LI>Now it doesn't support directly PDF. I use the new
-<A HREF="http://www.geocities.com/CapeCanaveral/Hangar/4794/">PDF libray v.1.04</A>
-by Antonio Rosella</LI>
-</UL>
-
+10/04/97 Version 1.0<BR>
+First public release
 
 </BODY>
 </HTML>
