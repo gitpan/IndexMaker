@@ -3,27 +3,30 @@
 #
 # indexmaker -- a perl script to make index.html from PDF files
 #
-# by Fabrizio Pivari <pivari@geocities.com> 19 Dicember 1997
+# by Fabrizio Pivari <pivari@geocities.com> 07 Febraury 1998
 #
 # Copy, use, and redistribute freely, but don't take my name off it and
 # clearly mark an altered version.  Fixes and enhancements cheerfully 
 # accepted.
 #
-# This is version 4.0.
+# This is version 4.1.
 #
 
-$version="4.0";
-$opt_configure="./indexmaker.cfg";
+$version="4.1";
+$opt_configure="indexmaker.cfg";
 require "newgetopt.pl";
-do NGetOpt("configure=s","help","verbose") || &printusage ;
-@elem=("META_AuthorName","META_AuthorMail","META_Keywords","META_Description",
-       "TITLE_title");
+do NGetOpt("configure=s","output=s","help","verbose") || &printusage ;
+@elem=("OUTPUT_file","META_AuthorName","META_AuthorMail","META_Keywords",
+       "META_Description","TITLE_title","GIF_pdficon","GIF_getacrobat");
 %option=(
-      META_AuthorName => 'Fabrizio Pivari',
-      META_AuthorMail => 'Fabrizio.Pivari@agip.it',
-      META_Keywords => 'index, maker, HTML, PDF, VRML',
-      META_Description => 'index.html made br IndexMaker 4.0',
-      TITLE_title => 'TOC file made by IndexMaker 4.0');
+      OUTPUT_file      => 'index.html',
+      META_AuthorName  => 'Fabrizio Pivari',
+      META_AuthorMail  => 'pivari@geocities.com',
+      META_Keywords    => 'index, maker, HTML, PDF, VRML',
+      META_Description => 'index.html made br IndexMaker $version',
+      TITLE_title      => 'TOC file made by IndexMaker $version',
+      GIF_pdficon      => 'pdficon.gif',
+      GIF_getacrobat   => 'getacro.gif');
 
 if ($opt_help) {&printusage};
 $verbose=0;
@@ -38,6 +41,7 @@ while (<CNF>)
       {if (/[ \t]*$elem[ \t]*:[ \t]*(.*)/i) {$option{$elem}=$1;}}
    }
 close(CNF);
+if ($opt_output) {$option{'OUTPUT_file'}=$opt_output;}
 
 $HTMLFILES       = "";
 $PDFFILES        = "";
@@ -45,9 +49,8 @@ $VRMLFILES       = "";
 $GRAPHICFILES    = "";
 $COMPRESSEDFILES = "";
 $OTHERS          = "";
-$out = "index.html";
-open(TEMP, ">$out")
-    || die("indexmaker: couldn't open tempfile $out \n");
+open(TEMP, ">$option{'OUTPUT_file'}")
+    || die("indexmaker: couldn't open tempfile $option{'OUTPUT_file'}\n");
 print TEMP <<EOF;
 <!doctype HTML public "-//W3O//DTD W3 HTML 3.2//EN">
 <!-- Made by IndexMaker $version written by Fabrizio Pivari (pivari\@geocities.com)
@@ -109,7 +112,7 @@ if ($PDFFILES ne "")
    print TEMP "<H2>PDF files ";
    print TEMP qq!<A HREF="http://www.adobe.com/prodindex/acrobat/readstep.html">
 !;
-   print TEMP qq!<IMG BORDER=0 SRC="./getacro.gif" WIDTH=88 HEIGHT=31></A>\n!;
+   print TEMP qq!<IMG BORDER=0 SRC="$option{'GIF_getacrobat'}" WIDTH=88 HEIGHT=31></A>\n!;
    print TEMP "</H2>\n<UL>\n$PDFFILES\n<\/UL>\n";
    }
 
@@ -182,7 +185,7 @@ sub pdffile
    $PDFFILES .= "<LI><A HREF=\"$file\">$title<\/A> ";
    if ($author ne "") {$PDFFILES .= "written by $author ";}
    if($description ne "") {$PDFFILES .= "<BR>\nDescription: $description\n";}
-   $PDFFILES .= "<IMG SRC=\"./pdficon.gif\" WIDTH=28 HEIGHT=31>\n<\/LI>\n";
+   $PDFFILES .= "<IMG SRC=\"$option{'GIF_pdficon'}\" WIDTH=28 HEIGHT=31>\n<\/LI>\n";
    if($verbose eq 1) {print "Analizing PDF        file: $file\n";}
    }
 
@@ -260,7 +263,8 @@ usage:
 where options include:
     -help                        print out this message
     -verbose                     verbose
-    -configure file              Default indexmaker.cfg
+    -configure file              default indexmaker.cfg
+    -output    file              default index.html
 
 files:
     with files you can use metacharacters and relative and absolute path name
@@ -269,6 +273,7 @@ example:
     indexmaker *.pdf
     indexmaker -c tests/test.cfg *.pdf
     indexmaker -v */*.html
+    indexmaker -o home.htm *.gif *.tiff *.jpeg
 
 If you want to know more about this tool, you might want
 to read the docs. They came together with indexmaker!

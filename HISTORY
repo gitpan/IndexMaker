@@ -39,3 +39,8 @@ Added tests
 Added the check to /Subject field in PDF files
 Now /Author, /Title, /Subject fields can be multiline fields
 Added a configuration file: option -c file (Default indexmaker.cfg)
+
+02/07/98 Version 4.1
+Added the parameter output file (Default index.html)
+Added the parameters for GIF files in indexmaker.cfg (idea of Bertrand Decouty
+<Bertrand.Decouty@irisa.fr>)

@@ -1,0 +1,76 @@
+<!-- IndexMakerH: a perl script to make an index from PDF, HTML, VRML and other
+files designed by Fabrizio Pivari (Pivari@geocities.com) on 02/07/98-->
+
+<HTML>
+<HEAD>
+<META Name="Author" Content="Fabrizio Pivari">
+<TITLE>History of IndexMaker 4.1</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#ffffff">
+<H1>History of IndexMaker 4.1</H1>
+What's new with version 1.1:
+<UL>
+<LI>Bug fix: now /Author field can be placed also after the first /Title field
+<LI>Special Characters: &amp -&gt &ampamp, &gt -&gt &ampgt, &lt -&gt &amplt Thanks to 
+<A HREF="mailto:A.Gale@RD.tei.ericsson.se">Gale Andrew</A>
+</UL>
+
+What's new with version 2.0:
+<UL>
+<LI>New input files format: HTML, OTHER
+</UL>
+
+<UL>
+<LI>If HTML and PDF files haven't a description the program uses the file name</
+LI>
+<LI>Bugfixes by <A HREF="mailto:Bertrand.Decouty@irisa.fr">Bertrand Decouty</A>:
+<BR>
+I believe you have missed the ';' at the end of html characters name
+(&amp; should be &amp;amp;)<BR>
+you do not deal with multiple same letters in one string (add g to
+end of s/x/&amp;xyz/)</LI>
+</UL>
+
+What's new with version 3.0:
+<UL>
+<LI>Every file is groupped in 5 categories: HTML files, PDF files, Graphic
+files, Compressed files, Others</LI>
+</UL>
+
+What's new with version 3.1:
+<UL>
+<LI>Verbose option</LI>
+</UL>
+
+What's new with version 3.2:
+<UL>
+<LI>New input file format: VRML v 1.0 (Info node), VRML v 2.0 and 97
+(WorldInfo node field info and title)</LI>
+<LI>Added docs/PDF.notes and docs/VRML.notes</LI>
+</UL>
+
+What's new with version 3.3:
+<UL>
+<LI>In HTML files now the program searchs the META Description and Author fields</LI>
+<LI>Added docs/HTML_META.notes</LI>
+<LI>Added tests directory</LI>
+</UL>
+
+What's new with version 4.0:
+<UL>
+<LI>Added the check to /Subject field in PDF files
+</LI>
+<LI>Now /Author, /Title, /Subject fields can be multiline fields</LI>
+<LI>Added a configuration file: option -c file (Default indexmaker.cfg)</LI>
+</UL>
+
+What's new with version 4.1:
+<UL>
+<LI>Added the parameter output file (Default index.html)</LI>
+<LI>Added the parameters for GIF files in indexmaker.cfg (idea of 
+<A HREF="mailto:Bertrand.Decouty@irisa.fr">Bertrand Decouty)</A></LI>
+</UL>
+
+</BODY>
+</HTML>

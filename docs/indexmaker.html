@@ -1,5 +1,5 @@
 <!-- IndexMaker: a perl script to make an index from PDF, HTML, VRML and other
-files designed by Fabrizio Pivari (Pivari@geocities.com) on 12/19/97-->
+files designed by Fabrizio Pivari (Pivari@geocities.com) on 02/07/98-->
 
 <HTML>
 <HEAD>
@@ -10,9 +10,9 @@ files designed by Fabrizio Pivari (Pivari@geocities.com) on 12/19/97-->
 <BODY BGCOLOR="#ffffff">
 <H1>An index.html maker from PDF, HTML, VRML and other files</H1>
 <H2>by <A HREF="mailto:Pivari@geocities.com">Fabrizio Pivari</A></H2>
-<H4>version 4.0 1997/12/19</H4>
+<H4>version 4.1 1998/02/07</H4>
 
-IndexMaker is a simple script PERL to make an index.html file from PDF files,
+IndexMaker is a PERL script to make an index.html file from PDF files,
 HTML files, VRML files and other files.<BR>
 At the moment, it uses
 <UL>
@@ -26,10 +26,6 @@ in every matched HTML files
 </UL>
 It should work with PERL 4 and 5.<P>
 
-<A HREF="IndexMaker.tar.gz">Source Code</A><BR>
-<IMG SRC="new.gif" WIDTH=28 HEIGHT=11>You can also find the source code at
-<A HREF="http://www.perl.org/CPAN/authors/Fabrizio_Pivari">
-CPAN authors/Fabrizio_Pivari/</A><P>
 
 This is the sintax
 
@@ -40,73 +36,47 @@ usage:
 where options include:
     -help                        print out this message
     -verbose                     verbose
-    -title  Title 
+    -configure file              default indexmaker.cfg
+    -output    file              default index.html
 
 files:
     with files you can use metacharacters and relative and absolute path name
     
 example:
     indexmaker *.pdf
-    indexmaker -t "TOC example" *.pdf
+    indexmaker -c tests/test.cfg *.pdf
     indexmaker -v */*.html
-</PRE><P>
-
-What's new with version 1.1:
+    indexmaker -o home.htm *.gif *.tiff *.jpeg
+</PRE>
+In the configuration file (default indexmaker.cfg) there are two fields
+separated by a colon : (it is possible to change this default in the
+perl code): the first field is the name of the variable, the second is
+the value of the variable.
+This is the list of the variables supported:
 <UL>
-<LI>Bug fix: now /Author field can be placed also after the first /Title field
-<LI>Special Characters: &amp -&gt &ampamp, &gt -&gt &ampgt, &lt -&gt &amplt Thanks to 
-<A HREF="mailto:A.Gale@RD.tei.ericsson.se">Gale Andrew</A>
+<LI>OUTPUT_file (default index.htmt). You can also use -output
+parameter to change the value of this variable.</LI>
+<LI>GIF_pdficon this icon is used in the output file</LI>
+<LI>GIF_getacrobat this icon is used in the output file</LI>
+<LI>META_AuthorName META information in the output file</LI>
+<LI>META_AuthorMail META information in the output file</LI>
+<LI>META_Keywords META information in the output file</LI>
+<LI>META_Description META information in the output file</LI>
+<LI>TITLE_title the value of &lt;TITLE&gt;...&lt;/TITLE&gt; and
+&lt;H1&gt;...&lt;/H1&gt; fields in the output file</LI>
 </UL>
 
-What's new with version 2.0:
 <UL>
-<LI>New input files format: HTML, OTHER
+What's new with version 4.1:
+<LI>Added the parameter output file (Default index.html)</LI>
+<LI>Added the parameters for GIF files in indexmaker.cfg (idea of 
+<A HREF="mailto:Bertrand.Decouty@irisa.fr">Bertrand Decouty)</A></LI>
 </UL>
-
-<UL>
-<LI>If HTML and PDF files haven't a description the program uses the file name</
-LI>
-<LI>Bugfixes by <A HREF="mailto:Bertrand.Decouty@irisa.fr">Bertrand Decouty</A>:
-<BR>
-I believe you have missed the ';' at the end of html characters name
-(&amp; should be &amp;amp;)<BR>
-you do not deal with multiple same letters in one string (add g to
-end of s/x/&amp;xyz/)</LI>
-</UL>
-
-What's new with version 3.0:
-<UL>
-<LI>Every file is groupped in 5 categories: HTML files, PDF files, Graphic
-files, Compressed files, Others</LI>
-</UL>
-
-What's new with version 3.1:
-<UL>
-<LI>Verbose option</LI>
-</UL>
-
-What's new with version 3.2:
-<UL>
-<LI>New input file format: VRML v 1.0 (Info node), VRML v 2.0 and 97
-(WorldInfo node field info and title)</LI>
-<LI>Added docs/PDF.notes and docs/VRML.notes</LI>
-</UL>
-
-What's new with version 3.3:
-<UL>
-<LI>In HTML files now the program searchs the META Description and Author fields</LI>
-<LI>Added docs/HTML_META.notes</LI>
-<LI>Added tests directory</LI>
-</UL>
-
-What's new with version 4.0:
-<UL>
-<LI>Added the check to /Subject field in PDF files
-</LI>
-<LI>Now /Author, /Title, /Subject fields can be multiline fields</LI>
-<LI>Added a configuration file: option -c file (Default indexmaker.cfg)</LI>
-</UL>
-
+<A HREF="indexmakerH.html">History file</A><P>
+<A HREF="IndexMaker.tar.gz">Source Code</A><BR>
+You can also find the source code at
+<A HREF="http://www.perl.org/CPAN/authors/Fabrizio_Pivari">
+CPAN authors/Fabrizio_Pivari/</A><P>
 
 </BODY>
 </HTML>
