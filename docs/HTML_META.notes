@@ -1,0 +1,92 @@
+From Sizzling HTML Jalfrezi http://www.woodhill.co.uk/html/html.htm
+
+<META>
+
+This command is used to embed document information not defined by other
+elements. Such information can be extracted by servers/clients for use in
+identifying, indexing and cataloguing specialised document meta-information.
+For most people's purposes, this has been superceded by the <title> element;
+although some search engines make use of the description and keywords types,
+and consequently they are well worth considering. You can also use <meta> tags
+to specifiy how your page should be cached. The PICS content rating system
+operated by RSAC (and employed by MS Internet Explorer) also makes use of <meta>
+tags. 
+
+There is one further useful and exciting side of <meta>. Using the http-equiv
+and content attributes, you can get an HTML page to automatically jump to
+another page or file after a specified time delay.  This means if you wish to
+redirect users from an old page to a new one, you can do so automatically by
+adding the appropriate <meta> command. Similarly you can automatically load a
+sound file on entering a document.
+
+The <meta> command must be placed in the <head> tags. 
+
+      http-equiv="refresh"
+      Tells the browser to jump to the document or file specified in the
+      content attribute. 
+
+      content="number; url=URL"
+      Specifies the time delay in seconds and the address of the file to jump
+      to. 
+
+Example of code
+      <head>
+      <meta http-equiv="refresh" content="10; url=html2ii.htm#meta">
+      </head> 
+
+How it renders
+      The above code is contained in an example page that will return you here
+      after a 10 second wait. The Sound section of Special Procedures contains
+      another example which automatically loads a sound file on entering a
+      document. 
+
+      http-equiv="pragma"
+      content="no-cache"
+
+Example of code
+      <head>
+      <meta http-equiv="pragma" content="no-cache">
+      </head> 
+
+How it renders
+      The tells the browser not to cache the page. Note: some servers may
+      ignore this command. 
+
+      http-equiv="expires"
+      Tells the browser that the page has a limited life. Once the expiry date
+      is reached the browser should reload the page. Note: some servers may
+      ignore this command. 
+
+      content="date"
+      Tells the browser the expiry date of the document. Setting a date that
+      has already passed the
+      browser should force the browser to load the latest version. 
+
+Example of code
+      <head>
+      <meta http-equiv="expires" content="Fri, 11 Apr 1997 17:46:01 GMT">
+      </head> 
+
+How it renders
+      The tells the browser that the pages expires on 11 April 1997 at 17:46
+      and 1 second, Greenwich meantime. 
+
+      name="description | keywords"
+      Tells the server whether the contents is a description or a list of
+      keywords. 
+
+      content="text | comma separated list"
+      Depending on the value of the name attribute, contents provides a
+      description of the document or list of keywords separated by commas. 
+
+Example of code
+      <meta Name="description" Content="All the HTML elements, attributes and
+      extensions. Teach yourself with clear explanations and examples for every
+      single command.">
+      <meta Name="keywords" Content="HTML commands, writing web pages,
+      extensions, attributes, tags, forms, tables, frames, authoring"> 
+
+How it renders
+      The above code could be used to describe this document. A search engine
+      may use the keywords to identify the document in a search and then
+      display the description with the document title. 

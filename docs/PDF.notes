@@ -1,14 +1,12 @@
-PDF 1.2 page 110
-http://www.adobe.com/supportservice/devrelations/PDFS/TN/PDFSPEC.PDF
+PDF 1.2
 
-6.11 Info dictionary
+Info dictionary
 
-A document's trailer may contain a reference to an Info dictionary that
-provides information about the document. This optional dictionary may contain
-one or more keys, whose values should be strings. These strings may be
-displayed in an Acrobat viewer's Document Info dialog. The characters in these
-strings are encoded using the predefined encoding PDFDocEncoding, described in
-Appendix C.
+A document's trailer may contain a reference to an Info dictionary that provides
+information about the document. This optional dictionary may contain one or more
+keys, whose values should be strings. These strings may be displayed in an
+Acrobat viewer's Document Info dialog. The characters in these strings are
+encoded using the predefined encoding PDFDocEncoding, described in Appendix C.
 Note Omit any key in the Info dictionary for which a value is not known, rather
 than including it with an empty string as its value.
 

@@ -1,0 +1,3 @@
+WorldInfo {
+	field MFString info [Informazioni utente Fabrizio.Pivari@agip.it]
+	field SFString title "TITOLO"	}

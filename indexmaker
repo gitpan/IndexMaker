@@ -1,16 +1,15 @@
 #!/usr/local/bin/perl
-# Should work with Perl4 and Perl5
+# Works with Perl4 and Perl5
 #
-# indexmaker -- a perl script to make index.html from PDF files, HTML files,
-#               VRML files and other files.
+# indexmaker -- a perl script to make index.html from PDF files
 #
-# by Fabrizio Pivari <pivari@geocities.com> 28 November 1997
+# by Fabrizio Pivari <pivari@geocities.com> 12 Dicember 1997
 #
 # Copy, use, and redistribute freely, but don't take my name off it and
 # clearly mark an altered version.  Fixes and enhancements cheerfully 
 # accepted.
 #
-# This is version 3.2
+# This is version 3.3.
 #
 
 require "newgetopt.pl";
@@ -25,16 +24,26 @@ $HTMLFILES       = "";
 $PDFFILES        = "";
 $VRMLFILES       = "";
 $GRAPHICFILES    = "";
-$COMPRESSEDFILES = ""; 
+$COMPRESSEDFILES = "";
 $OTHERS          = "";
 $out = "index.html";
 open(TEMP, ">$out")
     || die("indexmaker: couldn't open tempfile $out \n");
-print TEMP "<!-- IndexMaker written by Fabrizio Pivari ";
-print TEMP "(pivari\@geocities.com) on 10/04/97 -->\n\n<HTML>\n<HEAD>\n";
-print TEMP "<TITLE>$title<\/TITLE>\n";
-print TEMP "<\/HEAD>\n<BODY BGCOLOR=\"\#ffffff\">\n";
-print TEMP "<H1>$title<\/H1>\n";
+print TEMP <<EOF;
+<!doctype HTML public "-//W3O//DTD W3 HTML 3.2//EN">
+<!-- Made by IndexMaker 3.3 written by Fabrizio Pivari (pivari\@geocities.com)
+on 12/12/97 -->
+<HTML>
+<HEAD>
+<LINK REL="Author" HREF=mailto:pivari\@geocities.com>
+<META NAME="Author" CONTENT="Fabrizio Pivari">
+<META NAME="Keywords" CONTENT="index, maker, HTML, PDF, VRML">
+<META NAME="Description" CONTENT="index.html made by IndexMaker 3.3">
+<TITLE>$title</TITLE>
+</HEAD>
+<BODY BGCOLOR="\#ffffff">
+<H1>$title</H1>
+EOF
 
    if (@ARGV)
       {
@@ -43,7 +52,8 @@ print TEMP "<H1>$title<\/H1>\n";
          $file = $x;
          $dir = &dirname($x);
          $i=0;
-         $author="";
+         $author=""; $title=""; $description=""; $VRML=""; $TITLE="";
+         $META="";
          if (!open(STDIN, "$file"))
             {print STDERR "indexmaker: couldn't open $x for input\n";exit(1);}
          else
@@ -78,7 +88,8 @@ if ($HTMLFILES ne "")
 if ($PDFFILES ne "")
    {
    print TEMP "<H2>PDF files ";
-   print TEMP qq!<A HREF="http://www.adobe.com/prodindex/acrobat/readstep.html">!;
+   print TEMP qq!<A HREF="http://www.adobe.com/prodindex/acrobat/readstep.html">
+!;
    print TEMP qq!<IMG BORDER=0 SRC="./getacro.gif" WIDTH=88 HEIGHT=31></A>\n!;
    print TEMP "</H2>\n<UL>\n$PDFFILES\n<\/UL>\n";
    }
@@ -104,6 +115,8 @@ if ($OTHERS ne "")
    }
 
 
+
+
 print TEMP "<\/BODY>\n<\/HTML>\n";
 close(TEMP);
 
@@ -121,8 +134,8 @@ sub pdffile
    {
    while (<STDIN>)
       {
-      if (/^\/Author \((.*)\)/) {$author=&specialchar($1);}
-      if((/^\/Title \((.*)\)/) && ($i ==0)) {$title=&specialchar($1); $i=1;}
+      if (/^\/Author *\((.*)\)/) {$author=&specialchar($1);}
+      if((/^\/Title *\((.*)\)/) && ($i ==0)) {$title=&specialchar($1); $i=1;}
       }
    if ($title eq "") {$title=$file;}
    $PDFFILES .= "<LI><A HREF=\"./$file\">$title<\/A> ";
@@ -136,54 +149,55 @@ sub htmlfile
    {
    while (<STDIN>)
       {
+      if(/<META/i .. />/)
+         {
+         $META.=$_;
+         $META=~s/\n/ /;
+         if ($META=~/NAME=\"Author\" *CONTENT=\"([^"]*)\"/i) {$author=$1;}
+         if ($META=~/NAME=\"Description\" * CONTENT=\"([^"]*)\"/i)
+            {$description=$1;}
+         }
       if(/<TITLE>/i .. /<\/TITLE>/i)
          {
-         $i=1;
-         s/<TITLE>/<LI><A HREF=".\/$file">/i;
-         s/<\/TITLE>/<\/A>\n<\/LI>\n/i;
-         $HTMLFILES .= $_;
+         $TITLE.=$_;
+         $TITLE=~s/\n/ /;
+         $TITLE=~/<TITLE>(.*)<\/TITLE>/i;
+         $title=$1;
          }
       }
-   if ($i eq 0) {$HTMLFILES .=  "<LI><A HREF=\"./$file\">$file<\/A></LI>\n";}
+   if ($title eq "") {$title=$file;}
+   $HTMLFILES .=  "<LI><A HREF=\"./$file\">$title<\/A> ";
+   if($author ne "") {$HTMLFILES .= "written by $author";}
+   if($description ne "") {$HTMLFILES .= "<BR>\nDescription: $description\n";}
+   $HTMLFILES .= "</LI>\n";
    if($verbose eq 1) {print "Analizing HTML       file: $file\n";}
    }
 
 sub vrmlfile
 # Extracts from VRML files Info
    {
-   $info=""; $titlevrml="";
    while (<STDIN>)
       {
 # VRML 2.0
       if(/WorldInfo/i .. /}/)
          {
-         $i=1;
-         if(/info.*\[/i .. /\]/)
-            {
-            $_ =~ /\[(.*)\]/;
-            if ($1 ne "") {$info = &specialchar($1);}
-            }
-         if(/title.*\"/i .. /\"/)
-            {
-            $_ =~ /"(.*)"/;
-            if ($1 ne "") {$titlevrml = &specialchar($1);}
-            }
+         $VRML.=$_;
+         $VRML=~s/\n/ /;
+         if ($VRML=~/info.*\[([^\[]*)\]/i) {$description = &specialchar($1);}
+         if ($VRML=~/title.*\"([^"]*)\"/i) {$title = &specialchar($1);}
          }
 
 # VRML 1.0
       else
          {
-         $i = 1;
-         if(/Info.*{/i .. /}/)
-            {
-            $_ =~ /"(.*)"/;
-            if ($1 ne "") {$info = &specialchar($1);}
-            }
+         $VRML.=$_;
+         $VRML=~s/\n/ /;
+         if ($VRML=~/Info.*\"([^"]*)\"/i) {$description = &specialchar($1);}
          }
       }
-   if ($titlevrml eq "") {$titlevrml = $file;}
-   $VRMLFILES .= "<LI><A HREF=\"./$file\">$titlevrml<\/A> $info\n";
-   if ($i eq 0) {$VRMLFILES .=  "<LI><A HREF=\"./$file\">$file<\/A></LI>\n";}
+   if ($title eq "") {$title = $file;}
+   $VRMLFILES .= "<LI><A HREF=\"./$file\">$title<\/A> $description\n";
+   $VRMLFILES .= "</LI>\n";
    if($verbose eq 1) {print "Analizing VRML       file: $file\n";}
    }
 

@@ -1,4 +1,4 @@
-IndexMaker is a simple script PERL to make an index.html file from PDF files,
+IndexMaker is a script PERL to make an index.html file from PDF files,
 HTML files, VRML files and other files.
 It should work with PERL 4.x and 5.x.
 

@@ -17,7 +17,7 @@ Bugfixes by Bertrand Decouty <Bertrand.Decouty@irisa.fr>:
 - you do not deal with multiple same letters in one string (add g to
   end of s/x/&xyz/)
 
-11/15/97 Version 3.0
+11/20/97 Version 3.0
 Every file is groupped in 5 category: HTML files, PDF files, Graphic files,
 Compressed files, Others
 
@@ -28,3 +28,9 @@ Verbose option
 New input file format: VRML v 1.0 (Info node), VRML v 2.0 and 97 (WorldInfo node
 field info and title)
 Added docs/PDF.notes and docs/VRML.notes
+
+12/12/97 Version 3.3
+In HTML files now the program searchs the META Description and Author fields
+Added docs/HTML_META.notes
+Bugfixes
+Added tests
