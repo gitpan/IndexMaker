@@ -4,28 +4,31 @@
 # indexmaker -- a perl script to make index.html from PDF files,
 #               HTML files, VRML files and other files.
 #
-# by Fabrizio Pivari <pivari@geocities.com> 8 March 1998
+# by Fabrizio Pivari <pivari@geocities.com> 15 March 1998
 #
 # Copy, use, and redistribute freely, but don't take my name off it and
 # clearly mark an altered version.  Fixes and enhancements cheerfully 
 # accepted.
 #
-# This is version 5.1.
+# This is version 5.2.
 #
 #use strict;
 use Getopt::Long;
+use File::Find;
 # PDF library v. 1.04 http://www.geocities.com/CapeCanaveral/Hangar/4794/
 use PDF;
 
-my $version="5.1";
+my $version="5.2";
 my $configure="indexmaker.cfg";
 my $output="index.html";
+my $recursive="";
 my $verbose="";
 my $help="";
 my @elem; my %option; my $elem="";
 
 do GetOptions("configure=s" => \$configure,
               "output=s"    => \$output,
+              "recursive=s" => \$recursive,
               "help"        => \$help,
               "verbose"     => \$verbose) || printusage() ;
 @elem=("OUTPUT_file","META_AuthorName","META_AuthorMail","META_Keywords",
@@ -55,6 +58,15 @@ while (<CNF>) {
   foreach $elem (@elem) {if (/ *$elem *: *(.*)/i) {$option{$elem}=$1;}}
   }
 close(CNF);
+
+sub wanted {
+    push @ARGV,$File::Find::name;
+  }
+
+if ($recursive) { 
+  find (\&wanted,"$recursive");
+  }
+
 $output and $option{'OUTPUT_file'}=$output;
 
 my $HTMLFILES       = ""; my $PDFFILES        = ""; my $VRMLFILES       = "";
@@ -89,18 +101,18 @@ NEW: foreach $x (@ARGV) {
        $file = $x;
        $i=0;
        open(STDIN, "$file") || die ("indexmaker: couldn't open $file for input\n");
-       foreach $tmp (@PDFext) {if ($file =~ /.$tmp/i) {&pdffile;next NEW;}}
-       foreach $tmp (@HTMLext) {if ($file =~ /.$tmp/i) {&htmlfile;next NEW;}}
-       foreach $tmp (@VRMLext) {if ($file =~ /.$tmp/i) {&vrmlfile;next NEW;}}
+       foreach $tmp (@PDFext) {if ($file =~ /\.$tmp$/i) {&pdffile;next NEW;}}
+       foreach $tmp (@HTMLext) {if ($file =~ /\.$tmp$/i) {&htmlfile;next NEW;}}
+       foreach $tmp (@VRMLext) {if ($file =~ /\.$tmp$/i) {&vrmlfile;next NEW;}}
        foreach $tmp (@Graphicext) {
-         if ($file =~ /.$tmp/i) {
+         if ($file =~ /\.$tmp$/i) {
            $GRAPHICFILES .= "<LI><A HREF=\"$file\">$file<\/A></LI>\n";
            $verbose and print "Analizing graphic    file: $file\n";
            next NEW;
            }
          }
        foreach $tmp (@Compressext) {
-         if ($file =~ /.$tmp/i) {
+         if ($file =~ /\.$tmp$/i) {
            $COMPRESSEDFILES .= "<LI><A HREF=\"$file\">$file<\/A></LI>\n";
            $verbose and print "Analizing compressed file: $file\n";
            next NEW;
@@ -222,6 +234,7 @@ usage:
 where options include:
     -help                        print out this message
     -verbose                     verbose
+    -recursive directory         scan recursively the directory
     -configure file              default indexmaker.cfg
     -output    file              default index.html
 
@@ -233,6 +246,7 @@ example:
     indexmaker -c tests/test.cfg *.pdf
     indexmaker -v */*.html
     indexmaker -o home.htm *.gif *.tiff *.jpeg
+    indexmaker -r my_directory *.gz
 
 If you want to know more about this tool, you might want
 to read the docs. They came together with indexmaker!

@@ -1,5 +1,5 @@
 <!-- IndexMaker: a perl script to make an index from PDF, HTML, VRML and other
-files designed by Fabrizio Pivari (Pivari@geocities.com) on 03/08/98-->
+files designed by Fabrizio Pivari (Pivari@geocities.com) on 03/15/98-->
 
 <HTML>
 <HEAD>
@@ -13,7 +13,7 @@ files designed by Fabrizio Pivari (Pivari@geocities.com) on 03/08/98-->
 <TR>
 <TD  VALIGN=top ALIGN=left>
 <H2>by <A HREF="mailto:Pivari@geocities.com">Fabrizio Pivari</A></H2>
-<H4>version 5.1 1998/03/08</H4>
+<H4>version 5.2 1998/03/15</H4>
 
 IndexMaker is a PERL script to make an index.html file from PDF files,
 HTML files, VRML files and other files.<BR>
@@ -27,10 +27,11 @@ in every matched HTML files
 <LI>the WorldInfo node field info and title in every matched VRML 2.0 files
 <LI>the name of the file in the others
 </UL>
+From version 5.2 IndexMaker can scan the files in a directory recursively.
 </TD>
 <TD VALIGN=top ALIGN=center>
-<A HREF="http://www.geocities.com/CapeCanaveral/Hangar/4794/"><IMG SRC="anfacebig.gif" BORDER=0 WIDTH=130 HEIGHT=37></A><BR>
-<A HREF="http://www.geocities.com/CapeCanaveral/Hangar/4794/"><IMG SRC="anfacelogo.gif" BORDER=0 WIDTH=213 HEIGHT=164></A>
+<A HREF="http://www.geocities.com/CapeCanaveral/Hangar/4794/"><IMG SRC="anfacebig.gif" ALT="ANFACE Software" BORDER=0 WIDTH=130 HEIGHT=37></A><BR>
+<A HREF="http://www.geocities.com/CapeCanaveral/Hangar/4794/"><IMG SRC="anfacelogo.gif" ALT="ANFACE Software logo" BORDER=0 WIDTH=213 HEIGHT=164></A>
 </TD>
 </TR>
 </TABLE>
@@ -39,7 +40,9 @@ From version 5.0 IndexMaker requires PERL 5.xxx.<BR>
 This is the list of modules you require:
 <UL>
 <LI><A HREF="http://www.geocities.com/CapeCanaveral/Hangar/4794/">PDF libray v.1.04</A>
-by Antonio Rosella</LI>
+by <A HREF="mailto:antro@technologist.com">Antonio Rosella</A></LI>
+<LI>File::Find (included in PERL 5.xxx distribution)</LI>
+<LI>Getopt::Long (included in PERL 5.xxx distribution)</LI>
 </UL>
 You can find all the modules also at CPAN.<P>
 
@@ -52,6 +55,7 @@ usage:
 where options include:
     -help                        print out this message
     -verbose                     verbose
+    -recursive directory         scan recursively the directory
     -configure file              default indexmaker.cfg
     -output    file              default index.html
 
@@ -63,6 +67,7 @@ example:
     indexmaker -c tests/test.cfg *.pdf
     indexmaker -v */*.html
     indexmaker -o home.htm *.gif *.tiff *.jpeg
+    indexmaker -r my_directory *.gz
 </PRE>
 In the configuration file (default indexmaker.cfg) there are two fields
 separated by a colon : (it is possible to change this default in the
@@ -88,12 +93,12 @@ parameter to change the value of this variable.</LI>
 </UL>
 
 <UL>
-What's new with version 5.1:
-<LI>Without parameters, the help is print</LI>
-<LI>Added PDFandSPIDER document</LI>
+What's new with version 5.2:
+<LI>Added recursive option using File::Find module</LI>
+<LI>Bugfix: now indexmaker works correctly with categories</LI>
 </UL>
 <A HREF="indexmakerH.html">History file</A><P>
-<A HREF="IndexMaker.tar.gz">Source Code: the last release 5.1</A><BR>
+<A HREF="IndexMaker.tar.gz">Source Code: the last release 5.2</A><BR>
 <A HREF="IndexMaker4.3.tar.gz">Source Code: the last release that support
 PERL 4.xxx 4.3</A><BR>
 You can also find the source code at
