@@ -4,24 +4,25 @@
 # indexmaker -- a perl script to make index.html from PDF files,
 #               HTML files, VRML files and other files.
 #
-# by Fabrizio Pivari <pivari@geocities.com> 15 March 1998
+# by Fabrizio Pivari <pivari@geocities.com> 22 March 1998
 #
 # Copy, use, and redistribute freely, but don't take my name off it and
 # clearly mark an altered version.  Fixes and enhancements cheerfully 
 # accepted.
 #
-# This is version 5.2.
+# This is version 5.3.
 #
 #use strict;
 use Getopt::Long;
 use File::Find;
-# PDF library v. 1.04 http://www.geocities.com/CapeCanaveral/Hangar/4794/
+# PDF library v. 1.05 http://www.geocities.com/CapeCanaveral/Hangar/4794/
 use PDF;
 
-my $version="5.2";
+my $version="5.3";
 my $configure="indexmaker.cfg";
 my $output="index.html";
 my $recursive="";
+my $match="";
 my $verbose="";
 my $help="";
 my @elem; my %option; my $elem="";
@@ -29,6 +30,7 @@ my @elem; my %option; my $elem="";
 do GetOptions("configure=s" => \$configure,
               "output=s"    => \$output,
               "recursive=s" => \$recursive,
+              "match=s"     => \$match,
               "help"        => \$help,
               "verbose"     => \$verbose) || printusage() ;
 @elem=("OUTPUT_file","META_AuthorName","META_AuthorMail","META_Keywords",
@@ -60,10 +62,21 @@ while (<CNF>) {
 close(CNF);
 
 sub wanted {
+  if ($File::Find::name=~/$match/) {
     push @ARGV,$File::Find::name;
+    }
   }
 
+if ($match && !$recursive) {
+   print "You can use -match option only with -recursive option\n";
+   exit;
+   }
+
 if ($recursive) { 
+  $match=~s/\./\\./g;
+  $match=~s/\*/.*/g;
+  $match=~s/\?/./g;
+  $match=~s/$/\$/;
   find (\&wanted,"$recursive");
   }
 
@@ -235,6 +248,8 @@ where options include:
     -help                        print out this message
     -verbose                     verbose
     -recursive directory         scan recursively the directory
+    -match     files             match different files ex. *.pdf, a?.*
+                                 (require -recursive option)
     -configure file              default indexmaker.cfg
     -output    file              default index.html
 
@@ -246,7 +261,7 @@ example:
     indexmaker -c tests/test.cfg *.pdf
     indexmaker -v */*.html
     indexmaker -o home.htm *.gif *.tiff *.jpeg
-    indexmaker -r my_directory *.gz
+    indexmaker -m *.pdf -r my_directory *.gz
 
 If you want to know more about this tool, you might want
 to read the docs. They came together with indexmaker!

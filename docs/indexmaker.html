@@ -13,7 +13,7 @@ files designed by Fabrizio Pivari (Pivari@geocities.com) on 03/15/98-->
 <TR>
 <TD  VALIGN=top ALIGN=left>
 <H2>by <A HREF="mailto:Pivari@geocities.com">Fabrizio Pivari</A></H2>
-<H4>version 5.2 1998/03/15</H4>
+<H4>version 5.3 1998/03/22</H4>
 
 IndexMaker is a PERL script to make an index.html file from PDF files,
 HTML files, VRML files and other files.<BR>
@@ -39,8 +39,8 @@ From version 5.2 IndexMaker can scan the files in a directory recursively.
 From version 5.0 IndexMaker requires PERL 5.xxx.<BR>
 This is the list of modules you require:
 <UL>
-<LI><A HREF="http://www.geocities.com/CapeCanaveral/Hangar/4794/">PDF libray v.1.04</A>
-by <A HREF="mailto:antro@technologist.com">Antonio Rosella</A></LI>
+<LI><A HREF="http://www.geocities.com/CapeCanaveral/Hangar/4794/">PDF libray v.1.05</A>
+written by <A HREF="mailto:antro@technologist.com">Antonio Rosella</A></LI>
 <LI>File::Find (included in PERL 5.xxx distribution)</LI>
 <LI>Getopt::Long (included in PERL 5.xxx distribution)</LI>
 </UL>
@@ -56,6 +56,8 @@ where options include:
     -help                        print out this message
     -verbose                     verbose
     -recursive directory         scan recursively the directory
+    -match     files             match different files e.g. *.pdf, a?.*
+                                 (require -recursive option)
     -configure file              default indexmaker.cfg
     -output    file              default index.html
 
@@ -67,7 +69,7 @@ example:
     indexmaker -c tests/test.cfg *.pdf
     indexmaker -v */*.html
     indexmaker -o home.htm *.gif *.tiff *.jpeg
-    indexmaker -r my_directory *.gz
+    indexmaker -m *.pdf -r my_directory *.gz
 </PRE>
 In the configuration file (default indexmaker.cfg) there are two fields
 separated by a colon : (it is possible to change this default in the
@@ -93,12 +95,12 @@ parameter to change the value of this variable.</LI>
 </UL>
 
 <UL>
-What's new with version 5.2:
-<LI>Added recursive option using File::Find module</LI>
-<LI>Bugfix: now indexmaker works correctly with categories</LI>
+What's new with version 5.3:
+<LI>Added match option. Now you can select the files you want find with
+recursive option (ex. *.pdf, a?.*)</LI>
 </UL>
 <A HREF="indexmakerH.html">History file</A><P>
-<A HREF="IndexMaker.tar.gz">Source Code: the last release 5.2</A><BR>
+<A HREF="IndexMaker.tar.gz">Source Code: the last release 5.3</A><BR>
 <A HREF="IndexMaker4.3.tar.gz">Source Code: the last release that support
 PERL 4.xxx 4.3</A><BR>
 You can also find the source code at

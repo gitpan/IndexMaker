@@ -3,7 +3,8 @@ HTML files, VRML files and other files.
 From version 5.0 IndexMaker works with PERL 5.x.
 
 The modules you need:
-PDF library 1.04 http://www.geocities.com/CapeCanaveral/Hangar/4794/
+PDF library 1.05 http://www.geocities.com/CapeCanaveral/Hangar/4794/
+written by Antonio Rosella mailto:antro@technologist.com
 
 This is the sintax
 
@@ -14,6 +15,8 @@ where options include:
     -help                        print out this message
     -verbose                     verbose
     -recursive directory         scan recursively the directory
+    -match     files             match different files e.g. *.pdf, a?.*
+                                 (require -recursive option)
     -configure file              default indexmaker.cfg
     -output    file              default index.html
 
@@ -25,7 +28,7 @@ example:
     indexmaker -c tests/test.cfg *.pdf
     indexmaker -v */*.html
     indexmaker -o home.htm *.gif *.tiff *.jpeg
-    indexmaker -r my_directory *.gz
+    indexmaker -m *.pdf -r my_directory *.gz
 
 If you want to know more about this tool, you might want
 to read the docs. They came together with indexmaker!
