@@ -9,7 +9,7 @@
 # clearly mark an altered version.  Fixes and enhancements cheerfully 
 # accepted.
 #
-# This is version 2.1.
+# This is version 3.0.
 #
 
 require "newgetopt.pl";
@@ -18,14 +18,19 @@ if ($opt_help) {&printusage};
 $title="TOC file";
 if ($opt_title ne "") {$title=$opt_title;}
 
+$HTMLFILES       = "";
+$PDFFILES        = "";
+$GRAPHICFILES    = "";
+$COMPRESSEDFILES = ""; 
+$OTHERS          = "";
 $out = "index.html";
 open(TEMP, ">$out")
     || die("indexmaker: couldn't open tempfile $out \n");
 print TEMP "<!-- IndexMaker written by Fabrizio Pivari ";
-print TEMP "(pivari\@geocities.com) on 10/04/97 -->\n\n<HTML>\n<HEAD>\n";
+print TEMP "(pivari\@geocities.com) on 11/15/97 -->\n\n<HTML>\n<HEAD>\n";
 print TEMP "<TITLE>$title<\/TITLE>\n";
 print TEMP "<\/HEAD>\n<BODY BGCOLOR=\"\#ffffff\">\n";
-print TEMP "<H1>$title<\/H1>\n<UL>\n";
+print TEMP "<H1>$title<\/H1>\n";
 
    if (@ARGV)
       {
@@ -33,32 +38,52 @@ print TEMP "<H1>$title<\/H1>\n<UL>\n";
          {
          $file = $x;
          $dir = &dirname($x);
-         close(STDIN);
          $i=0;
          $author="";
          if (!open(STDIN, "$file"))
             {print STDERR "indexmaker: couldn't open $x for input\n";exit(1);}
          else
             {
-            if ($file =~ /.pdf/i)
-               {
-               select(TEMP);
-               &pdffile;
-               next;
-               }
-            if (($file =~ /.html/i) || ($file =~ /.htm/i))
-               {
-               select(TEMP);
-               &htmlfile;
-               next;
-               }
-            print TEMP qq!<LI><A HREF="./$file">$file<\/A></LI>\n!;
+            if ($file =~ /.pdf/i) {&pdffile;}
+            elsif (($file =~ /.html/i) || ($file =~ /.htm/i)) {&htmlfile;}
+            elsif (($file =~ /.gif/i) || ($file =~ /jpg/i))
+               {$GRAPHICFILES .= "<LI><A HREF=\"./$file\">$file<\/A></LI>\n";}
+            elsif (($file =~ /.gz/i) || ($file =~ /.zip/i))
+               {$COMPRESSEDFILES .= "<LI><A HREF=\"./$file\">$file<\/A></LI>\n";}
+            else {$OTHERS .= qq!<LI><A HREF="./$file">$file<\/A></LI>\n!;}
             }
          }
       }
-print TEMP "<\/UL>\n";
-print TEMP qq!<A HREF="http://www.adobe.com/prodindex/acrobat/readstep.html">!;
-print TEMP qq!<IMG BORDER=0 SRC="./getacro.gif" WIDTH=88 HEIGHT=31></A>\n!;
+
+if ($HTMLFILES ne "")
+   {
+   print TEMP "<H2>HTML files</H2>\n<UL>\n$HTMLFILES\n<\/UL>\n";
+   }
+
+if ($PDFFILES ne "")
+   {
+   print TEMP "<H2>PDF files ";
+   print TEMP qq!<A HREF="http://www.adobe.com/prodindex/acrobat/readstep.html">!;
+   print TEMP qq!<IMG BORDER=0 SRC="./getacro.gif" WIDTH=88 HEIGHT=31></A>\n!;
+   print TEMP "</H2>\n<UL>\n$PDFFILES\n<\/UL>\n";
+   }
+
+if ($GRAPHICFILES ne "")
+   {
+   print TEMP "<H2>Graphic files</H2>\n<UL>\n$GRAPHICFILES\n<\/UL>\n";
+   }
+
+if ($COMPRESSEDFILES ne "")
+   {
+   print TEMP "<H2>Compressed files</H2>\n<UL>\n$COMPRESSEDFILES\n<\/UL>\n";
+   }
+
+if ($OTHERS ne "")
+   {
+   print TEMP "<H2>Others</H2>\n<UL>\n$OTHERS\n<\/UL>\n";
+   }
+
+
 print TEMP "<\/BODY>\n<\/HTML>\n";
 close(TEMP);
 
@@ -80,9 +105,9 @@ sub pdffile
       if((/^\/Title \((.*)\)/) && ($i ==0)) {$title=&specialchar($1); $i=1;}
       }
    if ($title eq "") {$title=$file;}
-   print qq!<LI><A HREF="./$file">$title<\/A> !;
-   if ($author ne "") {print "written by $author ";}
-   print qq!<IMG SRC="./pdficon.gif" WIDTH=28 HEIGHT=31>\n<\/LI>\n!;
+   $PDFFILES .= "<LI><A HREF=\"./$file\">$title<\/A> ";
+   if ($author ne "") {$PDFFILES .= "written by $author ";}
+   $PDFFILES .= "<IMG SRC=\"./pdficon.gif\" WIDTH=28 HEIGHT=31>\n<\/LI>\n";
    }
 
 sub htmlfile
@@ -95,17 +120,17 @@ sub htmlfile
          $i=1;
          s/<TITLE>/<LI><A HREF=".\/$file">/i;
          s/<\/TITLE>/<\/A>\n<\/LI>\n/i;
-         print $_;
+         $HTMLFILES .= $_;
          }
       }
-   if ($i eq 0) {print qq!<LI><A HREF="./$file">$file<\/A></LI>\n!;}
+   if ($i eq 0) {$HTMLFILES .=  "<LI><A HREF=\"./$file\">$file<\/A></LI>\n";}
    }
 
 sub specialchar {
     local($char) = @_;
-    $char =~ s/&/&amp/;
-    $char =~ s/</&lt/;
-    $char =~ s/>/&gt/;
+    $char =~ s/&/&amp;/g;
+    $char =~ s/</&lt;/g;
+    $char =~ s/>/&gt;/g;
     return($char);
     }
 
