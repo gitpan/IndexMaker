@@ -1,0 +1,102 @@
+#!/usr/local/bin/perl
+# Works with Perl4 and Perl5
+#
+# indexmaker -- a perl script to make index.html from PDF files
+#
+# by Fabrizio Pivari <pivari@geocities.com> 4 October 1997
+#
+# Copy, use, and redistribute freely, but don't take my name off it and
+# clearly mark an altered version.  Fixes and enhancements cheerfully 
+# accepted.
+#
+# This is version 1.0.
+#
+
+require "newgetopt.pl";
+do NGetOpt("title=s","help") || &printusage ;
+if ($opt_help) {&printusage};
+$title="TOC file";
+if ($opt_title ne "") {$title=$opt_title;}
+
+$out = "index.html";
+open(TEMP, ">$out")
+    || die("indexmaker: couldn't open tempfile $out \n");
+print TEMP "<!-- IndexMaker written by Fabrizio Pivari";
+print TEMP "(pivari\@geocities.com) on 10/04/97 -->\n\n<HTML>\n<HEAD>\n";
+print TEMP "<TITLE>$title<\/TITLE>\n";
+print TEMP "<\/HEAD>\n<BODY BGCOLOR=\"\#ffffff\">\n";
+print TEMP "<H1>$title<\/H1>\n<UL>\n";
+
+   if (@ARGV)
+      {
+      foreach $x (@ARGV)
+         {
+         $file = $x;
+         $dir = &dirname($x);
+         close(STDIN);
+         $i=0;
+         if (!open(STDIN, "$file"))
+            {print STDERR "indexmaker: couldn't open $x for input\n";exit(1);}
+         else
+            {
+            select(TEMP);
+            &pdffile;
+            }
+         }
+      }
+print TEMP "<\/UL>\n";
+print TEMP qq!<A HREF="http://www.adobe.com/prodindex/acrobat/readstep.html">!;
+print TEMP qq!<IMG BORDER=0 SRC="./getacro.gif" WIDTH=88 HEIGHT=31></A>\n!;
+print TEMP "<\/BODY>\n<\/HTML>";
+close(TEMP);
+
+sub dirname
+# return filename with the basename part stripped away
+   {
+   local($file) = @_;
+   if ($file =~ /\//) {$file =~ s:/[^/]*$::;}
+   else {$file = ".";}
+   return($file);
+   }
+
+sub pdffile
+# Extracts from PDF files TITLE
+   {
+   while (<STDIN>)
+      {
+      if (/^\/Author \((.*)\)/) {$author=$1;}
+      if((/^\/Title \((.*)\)/) && ($i ==0)) 
+         {
+         print qq!<LI><A HREF="./$file">$1<\/A> !;
+         if ($author ne "") {print "written by $author ";}
+         print qq!<IMG SRC="./pdficon.gif" WIDTH=28 HEIGHT=31>\n<\/LI>\n!;
+         $i=1;
+         }
+      }
+   }
+
+sub printusage {
+    print <<USAGEDESC;
+
+usage:
+        indexmaker [-options ...] files
+
+where options include:
+    -help                        print out this message
+    -title  Title 
+
+files:
+    with files you can use metacharacters and relative and absolute path name
+    
+example:
+    indexmaker *.pdf
+    indexmaker -t "TOC example" *.pdf
+
+If you want to know more about this tool, you might want
+to read the docs. They came together with indexmaker!
+
+Home: http://www.geocities.com/CapeCanaveral/Lab/3469/indexmaker.html
+
+USAGEDESC
+    exit(1);
+}
