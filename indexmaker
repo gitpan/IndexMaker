@@ -1,18 +1,19 @@
 #!/usr/local/bin/perl
-# Works with Perl4 and Perl5
+# Should Work with Perl4 and Perl5
 #
-# indexmaker -- a perl script to make index.html from PDF files
+# indexmaker -- a perl script to make index.html from PDF files,
+#               HTML files, VRML files and other files.
 #
-# by Fabrizio Pivari <pivari@geocities.com> 07 Febraury 1998
+# by Fabrizio Pivari <pivari@geocities.com> 15 Febraury 1997
 #
 # Copy, use, and redistribute freely, but don't take my name off it and
 # clearly mark an altered version.  Fixes and enhancements cheerfully 
 # accepted.
 #
-# This is version 4.1.
+# This is version 4.2.
 #
 
-$version="4.1";
+$version="4.2";
 $opt_configure="indexmaker.cfg";
 require "newgetopt.pl";
 do NGetOpt("configure=s","output=s","help","verbose") || &printusage ;
@@ -23,7 +24,7 @@ do NGetOpt("configure=s","output=s","help","verbose") || &printusage ;
       META_AuthorName  => 'Fabrizio Pivari',
       META_AuthorMail  => 'pivari@geocities.com',
       META_Keywords    => 'index, maker, HTML, PDF, VRML',
-      META_Description => 'index.html made br IndexMaker $version',
+      META_Description => 'index.html made by IndexMaker $version',
       TITLE_title      => 'TOC file made by IndexMaker $version',
       GIF_pdficon      => 'pdficon.gif',
       GIF_getacrobat   => 'getacro.gif');
@@ -156,25 +157,28 @@ sub pdffile
    {
    while (<STDIN>)
       {
-      if (/\/Author/i .. /\)/)
+      if (/\/Author/i .. /\)\n/)
          {
          $AUTHOR.=$_;
+         $AUTHOR=&pdfspecialchar($AUTHOR);
          $AUTHOR=~s/\n/ /;
-         if ($AUTHOR=~/\/Author.*\(([^\(]*)\)/i)
+         if ($AUTHOR=~/\/Author[ \t]*\((.*)\)/i)
             {$author=&specialchar($1);}
          }
       if (/\/Subject/i .. /\)/)
          {
          $DESCRIPTION.=$_;
+         $DESCRIPTION=&pdfspecialchar($DESCRIPTION);
          $DESCRIPTION=~s/\n/ /;
-         if ($DESCRIPTION=~/\/Subject.*\(([^\(]*)\)/i)
+         if ($DESCRIPTION=~/\/Subject[ \t]*\((.*)\)/i)
             {$description=&specialchar($1);}
          }
       if ((/\/Title/i .. /\)/) && ($i ==0))
          {
          $TITLE.=$_;
+         $TITLE=&pdfspecialchar($TITLE);
          $TITLE=~s/\n/ /;
-         if ($TITLE=~/\/Title.*\(([^\(]*)\)/i)
+         if ($TITLE=~/\/Title[ \t]*\((.*)\)/i)
             {
             $title=&specialchar($1);
             $i=1;
@@ -185,7 +189,7 @@ sub pdffile
    $PDFFILES .= "<LI><A HREF=\"$file\">$title<\/A> ";
    if ($author ne "") {$PDFFILES .= "written by $author ";}
    if($description ne "") {$PDFFILES .= "<BR>\nDescription: $description\n";}
-   $PDFFILES .= "<IMG SRC=\"$option{'GIF_pdficon'}\" WIDTH=28 HEIGHT=31>\n<\/LI>\n";
+   $PDFFILES .= "<IMG SRC=\"$option{'GIF_pdficon'}\" WIDTH=34 HEIGHT=20>\n<\/LI>\n";
    if($verbose eq 1) {print "Analizing PDF        file: $file\n";}
    }
 
@@ -251,6 +255,15 @@ sub specialchar {
     $char =~ s/&/&amp;/g;
     $char =~ s/</&lt;/g;
     $char =~ s/>/&gt;/g;
+    return($char);
+    }
+
+sub pdfspecialchar {
+    local($char) = @_;
+    $char =~ s/\\\n/ /;
+    $char =~ s/\\\\/\\/g;
+    $char =~ s/\\\(/(/g;
+    $char =~ s/\\\)/)/g;
     return($char);
     }
 

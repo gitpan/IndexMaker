@@ -1,5 +1,5 @@
 <!-- IndexMaker: a perl script to make an index from PDF, HTML, VRML and other
-files designed by Fabrizio Pivari (Pivari@geocities.com) on 02/07/98-->
+files designed by Fabrizio Pivari (Pivari@geocities.com) on 02/15/98-->
 
 <HTML>
 <HEAD>
@@ -9,8 +9,11 @@ files designed by Fabrizio Pivari (Pivari@geocities.com) on 02/07/98-->
 
 <BODY BGCOLOR="#ffffff">
 <H1>An index.html maker from PDF, HTML, VRML and other files</H1>
+<TABLE>
+<TR>
+<TD  VALIGN=top ALIGN=left>
 <H2>by <A HREF="mailto:Pivari@geocities.com">Fabrizio Pivari</A></H2>
-<H4>version 4.1 1998/02/07</H4>
+<H4>version 4.2 1998/02/15</H4>
 
 IndexMaker is a PERL script to make an index.html file from PDF files,
 HTML files, VRML files and other files.<BR>
@@ -24,8 +27,15 @@ in every matched HTML files
 <LI>the WorldInfo node field info and title in every matched VRML 2.0 files
 <LI>the name of the file in the others
 </UL>
-It should work with PERL 4 and 5.<P>
+</TD>
+<TD VALIGN=top ALIGN=center>
+<A HREF="http://www.geocities.com/CapeCanaveral/Hangar/4794/"><IMG SRC="anfacebig.gif" BORDER=0 WIDTH=130 HEIGHT=37></A><BR>
+<A HREF="http://www.geocities.com/CapeCanaveral/Hangar/4794/"><IMG SRC="anfacelogo.gif" BORDER=0 WIDTH=213 HEIGHT=164></A>
+</TD>
+</TR>
+</TABLE>
 
+It should work with PERL 4 and 5.<P>
 
 This is the sintax
 
@@ -67,10 +77,9 @@ parameter to change the value of this variable.</LI>
 </UL>
 
 <UL>
-What's new with version 4.1:
-<LI>Added the parameter output file (Default index.html)</LI>
-<LI>Added the parameters for GIF files in indexmaker.cfg (idea of 
-<A HREF="mailto:Bertrand.Decouty@irisa.fr">Bertrand Decouty)</A></LI>
+What's new with version 4.2:
+<LI>Bugfixe: now the PDF fields /Author, /Title, /Subject can include the char ')'</LI>
+<LI>Added README in tests directory</LI>
 </UL>
 <A HREF="indexmakerH.html">History file</A><P>
 <A HREF="IndexMaker.tar.gz">Source Code</A><BR>

@@ -44,3 +44,8 @@ Added a configuration file: option -c file (Default indexmaker.cfg)
 Added the parameter output file (Default index.html)
 Added the parameters for GIF files in indexmaker.cfg (idea of Bertrand Decouty
 <Bertrand.Decouty@irisa.fr>)
+
+02/15/98 Version 4.2
+Bugfixe: now the PDF fields /Author, /Title, /Subject can include the char ')'.
+Added README in tests directory
+Changed the pdficon.gif image

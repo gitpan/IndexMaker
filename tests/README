@@ -1,0 +1,6 @@
+I use this directory to test the new features of indexmaker.
+
+At the moment, this is the most complete test:
+
+in the tests directory of the tool
+indexmaker -o home.htm test* null.html

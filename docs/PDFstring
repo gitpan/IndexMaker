@@ -1,0 +1,35 @@
+From Portable Document Format - Reference Manual - Version 1.2 (pag 44)
+4.4 Strings
+A string is a sequence of characters delimited by parentheses. If a string is
+too long to be conveniently placed on a single line, it may be split across
+multiple lines by using the backslash (\) character at the end of a line to
+indicate that the string continues on the following line. When this occurs, the
+backslash and end-of-line characters are not considered part of the string.
+Examples of strings are:
+( This is string number 1? )
+( strangeonium spectroscopy )
+(This string is split \
+across \
+three lines)
+Within a string, the backslash character is used as an escape to specify
+unbalanced parentheses, non-printing ASCII characters, and the backslash
+character itself.
+This escape mechanism is the same as for PostScript language strings, described
+in Section 3.2.2 of the PostScript Language Reference Manual, Second Edition.
+Table 4.1 lists the escape sequences for PDF.
+Table 4.1 Escape sequences in strings
+\n linefeed
+\r carriage return
+\t horizontal tab
+\b backspace
+\f formfeed
+\\ backslash
+\( left parenthesis
+\) right parenthesis
+\ ddd character code ddd (octal)
+Use of the \ ddd escape sequence is the preferred way to represent characters
+outside the printable ASCII character set, in order to minimize potential
+problems transmitting or storing the characters. The number ddd may contain
+one, two, or three octal digits. An example of a string with an octal character
+in it is:
+(string with \245two octal characters\307)
