@@ -49,3 +49,8 @@ Added the parameters for GIF files in indexmaker.cfg (idea of Bertrand Decouty
 Bugfixe: now the PDF fields /Author, /Title, /Subject can include the char ')'.
 Added README in tests directory
 Changed the pdficon.gif image
+
+02/22/98 Version 4.3
+In the configure file now it's possible to describe the extensions of the
+categories  HTML files, PDF files, VRML files, Graphic files, Compressed files,
+Others

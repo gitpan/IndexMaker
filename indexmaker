@@ -4,30 +4,37 @@
 # indexmaker -- a perl script to make index.html from PDF files,
 #               HTML files, VRML files and other files.
 #
-# by Fabrizio Pivari <pivari@geocities.com> 15 Febraury 1997
+# by Fabrizio Pivari <pivari@geocities.com> 22 Febraury 1997
 #
 # Copy, use, and redistribute freely, but don't take my name off it and
 # clearly mark an altered version.  Fixes and enhancements cheerfully 
 # accepted.
 #
-# This is version 4.2.
+# This is version 4.3.
 #
 
-$version="4.2";
+$version="4.3";
 $opt_configure="indexmaker.cfg";
 require "newgetopt.pl";
 do NGetOpt("configure=s","output=s","help","verbose") || &printusage ;
 @elem=("OUTPUT_file","META_AuthorName","META_AuthorMail","META_Keywords",
-       "META_Description","TITLE_title","GIF_pdficon","GIF_getacrobat");
+       "META_Description","TITLE_title","GIF_pdficon","GIF_getacrobat",
+       "PDF_extensions","HTML_extensions","VRML_extensions",
+       "Graphic_extensions","Compress_extensions");
 %option=(
-      OUTPUT_file      => 'index.html',
-      META_AuthorName  => 'Fabrizio Pivari',
-      META_AuthorMail  => 'pivari@geocities.com',
-      META_Keywords    => 'index, maker, HTML, PDF, VRML',
-      META_Description => 'index.html made by IndexMaker $version',
-      TITLE_title      => 'TOC file made by IndexMaker $version',
-      GIF_pdficon      => 'pdficon.gif',
-      GIF_getacrobat   => 'getacro.gif');
+      OUTPUT_file         => 'index.html',
+      META_AuthorName     => 'Fabrizio Pivari',
+      META_AuthorMail     => 'pivari@geocities.com',
+      META_Keywords       => 'index, maker, HTML, PDF, VRML',
+      META_Description    => 'index.html made br IndexMaker $version',
+      TITLE_title         => 'TOC file made by IndexMaker $version',
+      GIF_pdficon         => 'pdficon.gif',
+      GIF_getacrobat      => 'getacro.gif',
+      PDF_extensions      => 'pdf',
+      HTML_extensions     => 'html,htm',
+      VRML_extensions     => 'vrml,vrl',
+      Graphic_extensions  => 'gif,jpeg,jpg,png',
+      Compress_extensions => 'gz,zip,Z');
 
 if ($opt_help) {&printusage};
 $verbose=0;
@@ -44,18 +51,13 @@ while (<CNF>)
 close(CNF);
 if ($opt_output) {$option{'OUTPUT_file'}=$opt_output;}
 
-$HTMLFILES       = "";
-$PDFFILES        = "";
-$VRMLFILES       = "";
-$GRAPHICFILES    = "";
-$COMPRESSEDFILES = "";
-$OTHERS          = "";
+$HTMLFILES       = ""; $PDFFILES        = ""; $VRMLFILES       = "";
+$GRAPHICFILES    = ""; $COMPRESSEDFILES = ""; $OTHERS          = "";
 open(TEMP, ">$option{'OUTPUT_file'}")
     || die("indexmaker: couldn't open tempfile $option{'OUTPUT_file'}\n");
 print TEMP <<EOF;
 <!doctype HTML public "-//W3O//DTD W3 HTML 3.2//EN">
-<!-- Made by IndexMaker $version written by Fabrizio Pivari (pivari\@geocities.com)
-on 11/01/97 -->
+<!-- Made by IndexMaker $version written by Fabrizio Pivari (pivari\@geocities.com) -->
 <HTML>
 <HEAD>
 <LINK REL="Author" HREF=mailto:$option{'META_AuthorMail'}>
@@ -68,12 +70,17 @@ on 11/01/97 -->
 <H1>$option{'TITLE_title'}</H1>
 EOF
 
+@PDFext=split(/,/,$option{'PDF_extensions'});
+@HTMLext=split(/,/,$option{'HTML_extensions'});
+@VRMLext=split(/,/,$option{'VRML_extensions'});
+@Graphicext=split(/,/,$option{'Graphic_extensions'});
+@Compressext=split(/,/,$option{'Compress_extensions'});
+
    if (@ARGV)
       {
-      foreach $x (@ARGV)
+NEW:  foreach $x (@ARGV)
          {
          $file = $x;
-         $dir = &dirname($x);
          $i=0;
          $author=""; $title=""; $description=""; $VRML=""; $TITLE="";
          $DESCRIPTION=""; $PDF=""; $META=""; $AUTHOR="";
@@ -81,32 +88,38 @@ EOF
             {print STDERR "indexmaker: couldn't open $x for input\n";exit(1);}
          else
             {
-            if ($file =~ /.pdf/i) {&pdffile;}
-            elsif (($file =~ /.html/i) || ($file =~ /.htm/i)) {&htmlfile;}
-            elsif (($file =~ /.vrml/i) || ($file =~ /.vrl/i)) {&vrmlfile;}
-            elsif (($file =~ /.gif/i) || ($file =~ /jpg/i))
+            foreach $tmp (@PDFext)
+               {if ($file =~ /.$tmp/i) {&pdffile;next NEW;}}
+            foreach $tmp (@HTMLext)
+               {if ($file =~ /.$tmp/i) {&htmlfile;next NEW;}}
+            foreach $tmp (@VRMLext)
+               {if ($file =~ /.$tmp/i) {&vrmlfile;next NEW;}}
+            foreach $tmp (@Graphicext)
                {
-               $GRAPHICFILES .= "<LI><A HREF=\"$file\">$file<\/A></LI>\n";
-               if($verbose eq 1) {print "Analizing graphic    file: $file\n";}
+               if ($file =~ /.$tmp/i)
+                  {
+                  $GRAPHICFILES .= "<LI><A HREF=\"$file\">$file<\/A></LI>\n";
+                  if($verbose eq 1) {print "Analizing graphic    file: $file\n";}
+                  next NEW;
+                  }
                }
-            elsif (($file =~ /.gz/i) || ($file =~ /.zip/i))
+            foreach $tmp (@Compressext)
                {
-               $COMPRESSEDFILES .= "<LI><A HREF=\"$file\">$file<\/A></LI>\n";
-               if($verbose eq 1) {print "Analizing compressed file: $file\n";}
+               if ($file =~ /.$tmp/i)
+                  {
+                  $COMPRESSEDFILES .= "<LI><A HREF=\"$file\">$file<\/A></LI>\n";
+                  if($verbose eq 1) {print "Analizing compressed file: $file\n";}
+                  next NEW;
+                  }
                }
-            else
-               {
-               $OTHERS .= qq!<LI><A HREF="$file">$file<\/A></LI>\n!;
-               if($verbose eq 1) {print "Analizing others         : $file\n";}
-               }
+            $OTHERS .= qq!<LI><A HREF="$file">$file<\/A></LI>\n!;
+            if($verbose eq 1) {print "Analizing others         : $file\n";}
             }
          }
       }
 
 if ($HTMLFILES ne "")
-   {
-   print TEMP "<H2>HTML files</H2>\n<UL>\n$HTMLFILES\n<\/UL>\n";
-   }
+   {print TEMP "<H2>HTML files</H2>\n<UL>\n$HTMLFILES\n<\/UL>\n";}
 
 if ($PDFFILES ne "")
    {
@@ -118,39 +131,19 @@ if ($PDFFILES ne "")
    }
 
 if ($VRMLFILES ne "")
-   {
-   print TEMP "<H2>VRML files</H2>\n<UL>\n$VRMLFILES\n<\/UL>\n";
-   }
+   {print TEMP "<H2>VRML files</H2>\n<UL>\n$VRMLFILES\n<\/UL>\n";}
 
 if ($GRAPHICFILES ne "")
-   {
-   print TEMP "<H2>Graphic files</H2>\n<UL>\n$GRAPHICFILES\n<\/UL>\n";
-   }
+   {print TEMP "<H2>Graphic files</H2>\n<UL>\n$GRAPHICFILES\n<\/UL>\n";}
 
 if ($COMPRESSEDFILES ne "")
-   {
-   print TEMP "<H2>Compressed files</H2>\n<UL>\n$COMPRESSEDFILES\n<\/UL>\n";
-   }
+   {print TEMP "<H2>Compressed files</H2>\n<UL>\n$COMPRESSEDFILES\n<\/UL>\n";}
 
 if ($OTHERS ne "")
-   {
-   print TEMP "<H2>Others</H2>\n<UL>\n$OTHERS\n<\/UL>\n";
-   }
-
-
-
+   {print TEMP "<H2>Others</H2>\n<UL>\n$OTHERS\n<\/UL>\n";}
 
 print TEMP "<\/BODY>\n<\/HTML>\n";
 close(TEMP);
-
-sub dirname
-# return filename with the basename part stripped away
-   {
-   local($file) = @_;
-   if ($file =~ /\//) {$file =~ s:/[^/]*$::;}
-   else {$file = ".";}
-   return($file);
-   }
 
 sub pdffile
 # Extracts from PDF files TITLE
@@ -162,8 +155,7 @@ sub pdffile
          $AUTHOR.=$_;
          $AUTHOR=&pdfspecialchar($AUTHOR);
          $AUTHOR=~s/\n/ /;
-         if ($AUTHOR=~/\/Author[ \t]*\((.*)\)/i)
-            {$author=&specialchar($1);}
+         if ($AUTHOR=~/\/Author[ \t]*\((.*)\)/i) {$author=&specialchar($1);}
          }
       if (/\/Subject/i .. /\)/)
          {
@@ -179,10 +171,7 @@ sub pdffile
          $TITLE=&pdfspecialchar($TITLE);
          $TITLE=~s/\n/ /;
          if ($TITLE=~/\/Title[ \t]*\((.*)\)/i)
-            {
-            $title=&specialchar($1);
-            $i=1;
-            }
+            {$title=&specialchar($1); $i=1;}
          }
       }
    if ($title eq "") {$title=$file;}
@@ -235,7 +224,6 @@ sub vrmlfile
          if ($VRML=~/info.*\[([^\[]*)\]/i) {$description = &specialchar($1);}
          if ($VRML=~/title.*\"([^"]*)\"/i) {$title = &specialchar($1);}
          }
-
 # VRML 1.0
       else
          {

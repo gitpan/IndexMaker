@@ -1,5 +1,5 @@
 <!-- IndexMaker: a perl script to make an index from PDF, HTML, VRML and other
-files designed by Fabrizio Pivari (Pivari@geocities.com) on 02/15/98-->
+files designed by Fabrizio Pivari (Pivari@geocities.com) on 02/22/98-->
 
 <HTML>
 <HEAD>
@@ -13,7 +13,7 @@ files designed by Fabrizio Pivari (Pivari@geocities.com) on 02/15/98-->
 <TR>
 <TD  VALIGN=top ALIGN=left>
 <H2>by <A HREF="mailto:Pivari@geocities.com">Fabrizio Pivari</A></H2>
-<H4>version 4.2 1998/02/15</H4>
+<H4>version 4.3 1998/02/22</H4>
 
 IndexMaker is a PERL script to make an index.html file from PDF files,
 HTML files, VRML files and other files.<BR>
@@ -74,12 +74,19 @@ parameter to change the value of this variable.</LI>
 <LI>META_Description META information in the output file</LI>
 <LI>TITLE_title the value of &lt;TITLE&gt;...&lt;/TITLE&gt; and
 &lt;H1&gt;...&lt;/H1&gt; fields in the output file</LI>
+<LI>PDF_extensions lists of extensions for PDF files</LI>
+<LI>HTML_extensions lists of extensions for HTML files</LI>
+<LI>VRML_extensions lists of extensions for VRML files</LI>
+<LI>Graphic_extensions lists of extensions for Graphic files</LI>
+<LI>Compress_extensions lists of extensions for Compressed files</LI>
+
 </UL>
 
 <UL>
-What's new with version 4.2:
-<LI>Bugfixe: now the PDF fields /Author, /Title, /Subject can include the char ')'</LI>
-<LI>Added README in tests directory</LI>
+What's new with version 4.3:
+<LI>In the configure file now it's possible to describe the extensions of the
+categories  HTML files, PDF files, VRML files, Graphic files, Compressed files,
+Others</LI>
 </UL>
 <A HREF="indexmakerH.html">History file</A><P>
 <A HREF="IndexMaker.tar.gz">Source Code</A><BR>
