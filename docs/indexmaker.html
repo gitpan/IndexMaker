@@ -1,22 +1,47 @@
 <!-- IndexMaker: a perl script to make an index from PDF, HTML, VRML and other
-files designed by Fabrizio Pivari (Pivari@geocities.com) on 03/15/98-->
+files designed by Fabrizio Pivari (Pivari@geocities.com) on 03/29/98-->
 
 <HTML>
 <HEAD>
 <META Name="Author" Content="Fabrizio Pivari">
-<TITLE>An index.html maker</TITLE>
+<TITLE>IndexMaker</TITLE>
 </HEAD>
 
 <BODY BGCOLOR="#ffffff">
-<H1>An index.html maker from PDF, HTML, VRML and other files</H1>
 <TABLE>
 <TR>
 <TD  VALIGN=top ALIGN=left>
-<H2>by <A HREF="mailto:Pivari@geocities.com">Fabrizio Pivari</A></H2>
-<H4>version 5.3 1998/03/22</H4>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=4 BGCOLOR=silver><TR><TD>
+<FONT SIZE=+3><B>IndexMaker</B></FONT>
+</TD></TR></TABLE>
+<H3>Version 6.0 29th March 1998</H3>
+<TABLE CELLSPACING=0 CELLPADDING=4><TR>
+  <TD VALIGN=top>Programming by</TD>
+  <TD>
+  <A HREF="http://www.geocities.com/CapeCanaveral/Lab/3469/">Fabrizio Pivari</A>
+  <A HREF="mailto:pivari@geocities.com">&lt;pivari@geocities.com&gt;</A>
+  </TD></TR><TR>
+  <TD VALIGN=top>Documentation by</TD>
+  <TD>
+  <A HREF="http://www.geocities.com/CapeCanaveral/Lab/3469/">Fabrizio Pivari</A>
+  <A HREF="mailto:pivari@geocities.com">&lt;pivari@geocities.com&gt;</A>
+  </TD></TR>
+</TABLE>
 
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=4 BGCOLOR=silver><TR><TD>
+<FONT SIZE=+1>What is IndexMaker</FONT>
+</TD></TR></TABLE>
+<BR>
 IndexMaker is a PERL script to make an index.html file from PDF files,
 HTML files, VRML files and other files.<BR>
+</TD>
+<TD VALIGN=top ALIGN=center>
+<A HREF="http://www.geocities.com/CapeCanaveral/Hangar/4794/"><IMG SRC="anfacebig.gif" ALT="ANFACE Software" BORDER=0 WIDTH=130 HEIGHT=37></A><BR>
+<A HREF="http://www.geocities.com/CapeCanaveral/Hangar/4794/"><IMG SRC="anfacelogo.gif" ALT="ANFACE Software logo" BORDER=0 WIDTH=213 HEIGHT=164></A>
+</TD>
+</TR>
+</TABLE>
+
 At the moment, it uses
 <UL>
 <LI>the /Author field, the first /Title field and the /Subject field in every
@@ -27,82 +52,113 @@ in every matched HTML files
 <LI>the WorldInfo node field info and title in every matched VRML 2.0 files
 <LI>the name of the file in the others
 </UL>
-From version 5.2 IndexMaker can scan the files in a directory recursively.
-</TD>
-<TD VALIGN=top ALIGN=center>
-<A HREF="http://www.geocities.com/CapeCanaveral/Hangar/4794/"><IMG SRC="anfacebig.gif" ALT="ANFACE Software" BORDER=0 WIDTH=130 HEIGHT=37></A><BR>
-<A HREF="http://www.geocities.com/CapeCanaveral/Hangar/4794/"><IMG SRC="anfacelogo.gif" ALT="ANFACE Software logo" BORDER=0 WIDTH=213 HEIGHT=164></A>
-</TD>
-</TR>
-</TABLE>
+From version 5.2 IndexMaker can scan the files in a directory recursively.<BR>
+From version 6.0 IndexMaker can index files via FTP.
+From version 5.0 IndexMaker requires PERL 5.xxx.<P>
 
-From version 5.0 IndexMaker requires PERL 5.xxx.<BR>
-This is the list of modules you require:
-<UL>
-<LI><A HREF="http://www.geocities.com/CapeCanaveral/Hangar/4794/">PDF libray v.1.05</A>
-written by <A HREF="mailto:antro@technologist.com">Antonio Rosella</A></LI>
-<LI>File::Find (included in PERL 5.xxx distribution)</LI>
-<LI>Getopt::Long (included in PERL 5.xxx distribution)</LI>
-</UL>
-You can find all the modules also at CPAN.<P>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=4 BGCOLOR=silver><TR><TD>
+<FONT SIZE=+1>Getting and Installing PDFprint</FONT>
+</TD></TR></TABLE>
+<OL>
+  <LI><P>Get the latest Version of IndexMaker from:<BR>
+      <A HREF="http://www.geocities.com/CapeCanaveral/Lab/3469/indexmaker.html">
+      http://www.geocities.com/CapeCanaveral/Lab/3469/indexmaker.html</A>
+      or CPAN</P>
+  </LI>
 
-This is the sintax
+  <LI><P>Make sure you have Perl Version 5.003 or later on your
+      system:<BR>
+      <A HREF="http://www.perl.com/perl/info/software.html">
+      http://www.perl.com/perl/info/software.html</A></P>
+  </LI>
+  
+  <LI><P>Get the latest Version of PDF library module from:<BR>
+      <A HREF="http://www.geocities.com/CapeCanaveral/Hangar/4794/">
+      http://www.geocities.com/CapeCanaveral/Hangar/4794/</A>
+      or CPAN</P>
+  </LI>
+
+  <LI><P>Get the latest Version of libnet module from:<BR>
+      <A HREF="http://www.connect.net/gbarr/libnet/">
+      http://www.connect.net/gbarr/libnet/</A>
+      or CPAN</P>
+  </LI>
+
+  <LI>
+      <P>Create your personal indexmaker.cfg file.<BR>
+      In the configuration file (default indexmaker.cfg) there are two fields
+      separated by a colon : (it is possible to change this default in the
+      perl code): the first field is the name of the variable, the second is
+      the value of the variable.
+      This is the list of the variables supported:
+      <UL>
+      <LI>OUTPUT_file (default index.htmt). You can also use -output
+      parameter to change the value of this variable.</LI>
+      <LI>GIF_pdficon this icon is used in the output file</LI>
+      <LI>GIF_getacrobat this icon is used in the output file</LI>
+      <LI>META_AuthorName META information in the output file</LI>
+      <LI>META_AuthorMail META information in the output file</LI>
+      <LI>META_Keywords META information in the output file</LI>
+      <LI>META_Description META information in the output file</LI>
+      <LI>TITLE_title the value of &lt;TITLE&gt;...&lt;/TITLE&gt; and
+      &lt;H1&gt;...&lt;/H1&gt; fields in the output file</LI>
+      <LI>PDF_extensions lists of extensions for PDF files</LI>
+      <LI>HTML_extensions lists of extensions for HTML files</LI>
+      <LI>VRML_extensions lists of extensions for VRML files</LI>
+      <LI>Graphic_extensions lists of extensions for Graphic files</LI>
+      <LI>Compress_extensions lists of extensions for Compressed files</LI>
+      </UL>
+      </P>
+  </LI>
+</OL>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=4 BGCOLOR=silver><TR><TD>
+<FONT SIZE=+1>Syntax</FONT>
+</TD></TR></TABLE>
 
 <PRE>
 usage:
-        indexmaker [-options ...] files
+        indexmaker [-options ...] list
 
 where options include:
     -help                        print out this message
     -verbose                     verbose
     -recursive directory         scan recursively the directory
-    -match     files             match different files e.g. *.pdf, a?.*
+    -match     files             match different files ex. *.pdf, a?.*
                                  (require -recursive option)
     -configure file              default indexmaker.cfg
     -output    file              default index.html
 
-files:
-    with files you can use metacharacters and relative and absolute path name
-    
+list:
+    with list you can use metacharacters and relative and absolute path name
+    and ftp URL like ftp://ftp.host.com/directory/file
+   
 example:
     indexmaker *.pdf
-    indexmaker -c tests/test.cfg *.pdf
+    indexmaker -c tests/test.cfg ftp://ftp.host.com/directory/file *.pdf
     indexmaker -v */*.html
     indexmaker -o home.htm *.gif *.tiff *.jpeg
     indexmaker -m *.pdf -r my_directory *.gz
 </PRE>
-In the configuration file (default indexmaker.cfg) there are two fields
-separated by a colon : (it is possible to change this default in the
-perl code): the first field is the name of the variable, the second is
-the value of the variable.
-This is the list of the variables supported:
-<UL>
-<LI>OUTPUT_file (default index.htmt). You can also use -output
-parameter to change the value of this variable.</LI>
-<LI>GIF_pdficon this icon is used in the output file</LI>
-<LI>GIF_getacrobat this icon is used in the output file</LI>
-<LI>META_AuthorName META information in the output file</LI>
-<LI>META_AuthorMail META information in the output file</LI>
-<LI>META_Keywords META information in the output file</LI>
-<LI>META_Description META information in the output file</LI>
-<LI>TITLE_title the value of &lt;TITLE&gt;...&lt;/TITLE&gt; and
-&lt;H1&gt;...&lt;/H1&gt; fields in the output file</LI>
-<LI>PDF_extensions lists of extensions for PDF files</LI>
-<LI>HTML_extensions lists of extensions for HTML files</LI>
-<LI>VRML_extensions lists of extensions for VRML files</LI>
-<LI>Graphic_extensions lists of extensions for Graphic files</LI>
-<LI>Compress_extensions lists of extensions for Compressed files</LI>
-</UL>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=4 BGCOLOR=silver><TR><TD>
+<FONT SIZE=+1>What's new in this version</FONT>
+</TD></TR></TABLE>
 
 <UL>
-What's new with version 5.3:
-<LI>Added match option. Now you can select the files you want find with
-recursive option (ex. *.pdf, a?.*)</LI>
+<LI>FTP support with <A HREF="http://www.connect.net/gbarr/libnet">
+libnet module</A></LI>
+<LI>New documentation style</LI>
 </UL>
-<A HREF="indexmakerH.html">History file</A><P>
-<A HREF="IndexMaker.tar.gz">Source Code: the last release 5.3</A><BR>
-<A HREF="IndexMaker4.3.tar.gz">Source Code: the last release that support
-PERL 4.xxx 4.3</A><BR>
+Here you can find an exhaustive <A HREF="indexmakerH.html">history file</A><P>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=4 BGCOLOR=silver><TR><TD>
+<FONT SIZE=+1>Source</FONT>
+</TD></TR></TABLE>
+<A HREF="IndexMaker.tar.gz">Source Code: the last release 6.0</A><BR>
+<A HREF="IndexMaker5.3.tar.gz">Source Code: the last release without libnet 5.3</A><BR>
+<A HREF="IndexMaker4.3.tar.gz">Source Code: the last release with PERL 4.xxx
+support 4.3</A><BR>
 You can also find the source code at
 <A HREF="http://www.perl.org/CPAN/authors/Fabrizio_Pivari">
 CPAN authors/Fabrizio_Pivari/</A><P>

@@ -1,3 +1,8 @@
+03/29/98 Version 6.0
+FTP support with libnet module
+http://www.connect.net/gbarr/libnet
+New documentation style
+
 03/22/98 Version 5.3
 Added match option. Now you can select the files you want find with recursive
 option (e.g. *.pdf, a?.*) 

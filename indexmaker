@@ -4,21 +4,25 @@
 # indexmaker -- a perl script to make index.html from PDF files,
 #               HTML files, VRML files and other files.
 #
-# by Fabrizio Pivari <pivari@geocities.com> 22 March 1998
+# by Fabrizio Pivari <pivari@geocities.com> 29 March 1998
 #
 # Copy, use, and redistribute freely, but don't take my name off it and
 # clearly mark an altered version.  Fixes and enhancements cheerfully 
 # accepted.
 #
-# This is version 5.3.
+# This is version 6.0.
 #
-#use strict;
+use strict;
 use Getopt::Long;
 use File::Find;
 # PDF library v. 1.05 http://www.geocities.com/CapeCanaveral/Hangar/4794/
 use PDF;
+# libnet http://www.connect.net/gbarr/libnet/
+use Net::FTP;
 
-my $version="5.3";
+# Remember to change the generic e-mail with yours!
+my $user="test\@test.com";
+my $version="6.0";
 my $configure="indexmaker.cfg";
 my $output="index.html";
 my $recursive="";
@@ -103,6 +107,7 @@ EOF
 
 my @PDFext; my @HTMLext; my @VRMLext; my @Graphicext; my @Compressext;
 my $x=""; my $file=""; my $tmp=""; my $i;
+my @FTP; my $ftpfile=""; my $url=""; my $ftp="";
 @PDFext=split(/,/,$option{'PDF_extensions'});
 @HTMLext=split(/,/,$option{'HTML_extensions'});
 @VRMLext=split(/,/,$option{'VRML_extensions'});
@@ -111,28 +116,64 @@ my $x=""; my $file=""; my $tmp=""; my $i;
 
 if (@ARGV) {
 NEW: foreach $x (@ARGV) {
+       my $directory=""; 
+       $ftpfile=0;
+       $url = $x;
        $file = $x;
        $i=0;
+       if($file =~ /ftp:\/\/(.*)/) {
+         @FTP = split (/\//,$1);
+         $directory.="/";
+         $directory.=join ("/",@FTP[1..($#FTP-1)]);
+         $ftp = Net::FTP->new("$FTP[$0]");
+         $ftp->login("anonymous",$user);
+         $ftp->cwd("$directory");
+         $ftp->get("$FTP[$#FTP]");
+         $ftp->quit;
+         $file=$FTP[$#FTP];
+         $ftpfile=1;
+         }
        open(STDIN, "$file") || die ("indexmaker: couldn't open $file for input\n");
        foreach $tmp (@PDFext) {if ($file =~ /\.$tmp$/i) {&pdffile;next NEW;}}
        foreach $tmp (@HTMLext) {if ($file =~ /\.$tmp$/i) {&htmlfile;next NEW;}}
        foreach $tmp (@VRMLext) {if ($file =~ /\.$tmp$/i) {&vrmlfile;next NEW;}}
        foreach $tmp (@Graphicext) {
          if ($file =~ /\.$tmp$/i) {
-           $GRAPHICFILES .= "<LI><A HREF=\"$file\">$file<\/A></LI>\n";
-           $verbose and print "Analizing graphic    file: $file\n";
+           if($ftpfile) {
+             $GRAPHICFILES .= "<LI><A HREF=\"$url\">$url<\/A></LI>\n";
+             $verbose and print "Analizing graphic    file: $url\n";
+             unlink $file;
+             }
+           else {
+             $GRAPHICFILES .= "<LI><A HREF=\"$file\">$file<\/A></LI>\n";
+             $verbose and print "Analizing graphic    file: $file\n";
+             }
            next NEW;
            }
          }
        foreach $tmp (@Compressext) {
          if ($file =~ /\.$tmp$/i) {
-           $COMPRESSEDFILES .= "<LI><A HREF=\"$file\">$file<\/A></LI>\n";
-           $verbose and print "Analizing compressed file: $file\n";
+           if($ftpfile) {
+             $COMPRESSEDFILES .= "<LI><A HREF=\"$url\">$url<\/A></LI>\n";
+             $verbose and print "Analizing compressed file: $url\n";
+             unlink $file;
+             }
+           else {
+             $COMPRESSEDFILES .= "<LI><A HREF=\"$file\">$file<\/A></LI>\n";
+             $verbose and print "Analizing compressed file: $file\n";
+             }
            next NEW;
            }
          }
-       $OTHERS .= qq!<LI><A HREF="$file">$file<\/A></LI>\n!;
-       $verbose and print "Analizing others         : $file\n";
+       if($ftpfile) {
+         $OTHERS .= qq!<LI><A HREF="$url">$url<\/A></LI>\n!;
+         $verbose and print "Analizing others         : $url\n";
+         unlink $file;
+       }
+       else {
+         $OTHERS .= qq!<LI><A HREF="$file">$file<\/A></LI>\n!;
+         $verbose and print "Analizing others         : $file\n";
+         }
        }
      }
 else {printusage();}
@@ -166,11 +207,18 @@ sub pdffile {
   $description=&pdfspecialchar($description);
   $description=&specialchar($description);
   !$title and $title=$file;
-  $PDFFILES .= "<LI><A HREF=\"$file\">$title<\/A> ";
+  if($ftpfile){
+    $PDFFILES .= "<LI><A HREF=\"$url\">$title<\/A> ";
+    $verbose and print "Analizing PDF        file: $url\n";
+    unlink $file;
+    }
+  else {
+    $PDFFILES .= "<LI><A HREF=\"$file\">$title<\/A> ";
+    $verbose and print "Analizing PDF        file: $file\n";
+    }
   $author and $PDFFILES .= "written by $author ";
   $description and $PDFFILES .= "<BR>\nDescription: $description\n";
   $PDFFILES .= "<IMG SRC=\"$option{'GIF_pdficon'}\" WIDTH=34 HEIGHT=20>\n<\/LI>\n";
-  $verbose and print "Analizing PDF        file: $file\n";
   }
 
 sub htmlfile {
@@ -191,11 +239,18 @@ sub htmlfile {
       }
     }
   !$title and $title=$file;
-  $HTMLFILES .=  "<LI><A HREF=\"$file\">$title<\/A> ";
+  if($ftpfile){
+    $HTMLFILES .=  "<LI><A HREF=\"$url\">$title<\/A> ";
+    $verbose and print "Analizing HTML       file: $url\n";
+    unlink $file;
+    }
+  else {
+    $HTMLFILES .=  "<LI><A HREF=\"$file\">$title<\/A> ";
+    $verbose and print "Analizing HTML       file: $file\n";
+    }
   $author and $HTMLFILES .= "written by $author";
   $description and $HTMLFILES .= "<BR>\nDescription: $description\n";
   $HTMLFILES .= "</LI>\n";
-  $verbose and print "Analizing HTML       file: $file\n";
   }
 
 sub vrmlfile {
@@ -215,10 +270,16 @@ sub vrmlfile {
       if ($VRML=~/Info.*\"([^"]*)\"/i) {$description = &specialchar($1);}
       }
     }
-  if ($title eq "") {$title = $file;}
-  $VRMLFILES .= "<LI><A HREF=\"$file\">$title<\/A> $description\n";
-  $VRMLFILES .= "</LI>\n";
-  $verbose and print "Analizing VRML       file: $file\n";
+  !$title and $title = $file;
+  if($ftpfile){
+    $VRMLFILES .= "<LI><A HREF=\"$url\">$title<\/A> $description\n</LI>\n";
+    $verbose and print "Analizing VRML       file: $url\n";
+    unlink $file;
+    }
+  else {
+    $VRMLFILES .= "<LI><A HREF=\"$file\">$title<\/A> $description\n</LI>\n";
+    $verbose and print "Analizing VRML       file: $file\n";
+    }
   }
 
 sub specialchar {
@@ -242,7 +303,7 @@ sub printusage {
     print <<USAGEDESC;
 
 usage:
-        indexmaker [-options ...] files
+        indexmaker [-options ...] list
 
 where options include:
     -help                        print out this message
@@ -253,12 +314,13 @@ where options include:
     -configure file              default indexmaker.cfg
     -output    file              default index.html
 
-files:
-    with files you can use metacharacters and relative and absolute path name
+list:
+    with list you can use metacharacters and relative and absolute path name
+    and ftp URL like ftp://ftp.host.com/directory/file
     
 example:
     indexmaker *.pdf
-    indexmaker -c tests/test.cfg *.pdf
+    indexmaker -c tests/test.cfg ftp://ftp.host.com/directory/file *.pdf
     indexmaker -v */*.html
     indexmaker -o home.htm *.gif *.tiff *.jpeg
     indexmaker -m *.pdf -r my_directory *.gz

@@ -5,27 +5,29 @@ From version 5.0 IndexMaker works with PERL 5.x.
 The modules you need:
 PDF library 1.05 http://www.geocities.com/CapeCanaveral/Hangar/4794/
 written by Antonio Rosella mailto:antro@technologist.com
+libnet http://www.connect.net/gbarr/libnet/
 
 This is the sintax
 
 usage:
-        indexmaker [-options ...] files
+        indexmaker [-options ...] list
 
 where options include:
     -help                        print out this message
     -verbose                     verbose
     -recursive directory         scan recursively the directory
-    -match     files             match different files e.g. *.pdf, a?.*
+    -match     files             match different files ex. *.pdf, a?.*
                                  (require -recursive option)
     -configure file              default indexmaker.cfg
     -output    file              default index.html
 
-files:
-    with files you can use metacharacters and relative and absolute path name
-    
+list:
+    with list you can use metacharacters and relative and absolute path name
+    and ftp URL like ftp://ftp.host.com/directory/file
+   
 example:
     indexmaker *.pdf
-    indexmaker -c tests/test.cfg *.pdf
+    indexmaker -c tests/test.cfg ftp://ftp.host.com/directory/file *.pdf
     indexmaker -v */*.html
     indexmaker -o home.htm *.gif *.tiff *.jpeg
     indexmaker -m *.pdf -r my_directory *.gz
