@@ -1,4 +1,5 @@
-IndexMaker is a simple script PERL to make an index.html file from PDF file.
+IndexMaker is a simple script PERL to make an index.html file from PDF files,
+HTML files and other files.
 It should work with PERL 4.x and 5.x.
 
 This is the sintax
@@ -9,6 +10,7 @@ usage:
 
 where options include:
     -help                        print out this message
+    -verbose                     verbose
     -title  Title 
 
 files:
@@ -17,6 +19,7 @@ files:
 example:
     indexmaker *.pdf
     indexmaker -t "TOC example" *.pdf
+    indexmaker -v */*.html
 
 If you want to know more about this tool, you might want
 to read the docs. They came together with indexmaker!
@@ -27,7 +30,8 @@ Enjoy it!
 
 Send me your suggestions.
 
-Fabrizio Pivari
-mailto:Pivari@hotmail.com
-mailto:Pivari@geocities.com
-Home: http://www.geocities.com/CapeCanaveral/Lab/3469
+     _/_/_/_/ _/_/_/     Fabrizio Pivari
+    _/       _/    _/   mailto:pivari@hotmail.com
+   _/_/_/   _/_/_/     mailto:pivari@yahoo.com
+  _/       _/         mailto:pivari@geocities.com
+ _/       _/         http://www.geocities.com/CapeCanaveral/Lab/3469/

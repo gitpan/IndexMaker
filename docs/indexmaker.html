@@ -1,19 +1,19 @@
-<!-- IndexMaker: a perl script to make an index from PDF, HTML and other files
-designed by Fabrizio Pivari (Pivari@geocities.com) on 11/15/97-->
+<!-- IndexMaker: a perl script to make an index from some PDF files designed by
+Fabrizio Pivari (Pivari@geocities.com) on 11/15/97-->
 
 <HTML>
 <HEAD>
 <META Name="Author" Content="Fabrizio Pivari">
-<TITLE>An index.html maker from PDF, HTML and other files</TITLE>
+<TITLE>An index.html maker from PDF files</TITLE>
 </HEAD>
 
 <BODY BGCOLOR="#ffffff">
-<H1>An index.html maker from PDF, HTML and other files</H1>
+<H1>An index.html maker from PDF files</H1>
 <H2>by <A HREF="mailto:Pivari@geocities.com">Fabrizio Pivari</A></H2>
-<H4>version 3.0 1997/11/15</H4>
+<H4>version 3.1 1997/11/28</H4>
 
-IndexMaker is a simple script PERL to make an index.html file from PDF, HTML
-and other  files.
+IndexMaker is a simple script PERL to make an index.html file from PDF files,
+HTML files and other files.
 It should work with PERL 4 and 5.<BR>
 It uses the /Author field and the first /Title field in every
 matched PDF files, the &ltTITLE&gt &lt;/TITLE&gt field in every matched HTML files and
@@ -32,6 +32,7 @@ usage:
 
 where options include:
     -help                        print out this message
+    -verbose                     verbose
     -title  Title 
 
 files:
@@ -40,6 +41,7 @@ files:
 example:
     indexmaker *.pdf
     indexmaker -t "TOC example" *.pdf
+    indexmaker -v */*.html
 </PRE><P>
 
 What's new with version 1.1:
@@ -56,8 +58,10 @@ What's new with version 2.0:
 
 What's new with version 2.1:
 <UL>
-<LI>If HTML and PDF files haven't a description the program uses the file name</LI>
-<LI>Bugfixes by <A HREF="mailto:Bertrand.Decouty@irisa.fr">Bertrand Decouty</A>:<BR>
+<LI>If HTML and PDF files haven't a description the program uses the file name</
+LI>
+<LI>Bugfixes by <A HREF="mailto:Bertrand.Decouty@irisa.fr">Bertrand Decouty</A>:
+<BR>
 I believe you have missed the ';' at the end of html characters name
 (&amp; should be &amp;amp;)<BR>
 you do not deal with multiple same letters in one string (add g to
@@ -69,5 +73,11 @@ What's new with version 3.0:
 <LI>Every file is groupped in 5 categories: HTML files, PDF files, Graphic
 files, Compressed files, Others</LI>
 </UL>
+
+What's new with version 3.1:
+<UL>
+<LI>Verbose option</LI>
+</UL>
+
 </BODY>
 </HTML>

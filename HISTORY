@@ -9,7 +9,7 @@ Thanks to A.Gale@RD.tei.ericsson.se (Gale Andrew)
 11/01/97 Version 2.0
 New input files format: HTML, OTHER 
 
-11/06/97 Version 2.1
+11/15/97 Version 2.1
 If HTML and PDF files haven't a description the program uses the file name
 Bugfixes by Bertrand Decouty <Bertrand.Decouty@irisa.fr>:
 - I believe you have missed the ";" at the end of html characters name
@@ -18,5 +18,8 @@ Bugfixes by Bertrand Decouty <Bertrand.Decouty@irisa.fr>:
   end of s/x/&xyz/)
 
 11/15/97 Version 3.0
-Every file is groupped in 5 categories: HTML files, PDF files, Graphic files,
+Every file is groupped in 5 category: HTML files, PDF files, Graphic files,
 Compressed files, Others
+
+11/28/97 Version 3.1
+Verbose option

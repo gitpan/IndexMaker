@@ -1,22 +1,25 @@
 #!/usr/local/bin/perl
 # Works with Perl4 and Perl5
 #
-# indexmaker -- a perl script to make index.html from PDF files
+# indexmaker -- a perl script to make index.html from PDF files, HTML files
+#               and other files.
 #
-# by Fabrizio Pivari <pivari@geocities.com> 15 November 1997
+# by Fabrizio Pivari <pivari@geocities.com> 28 November 1997
 #
 # Copy, use, and redistribute freely, but don't take my name off it and
 # clearly mark an altered version.  Fixes and enhancements cheerfully 
 # accepted.
 #
-# This is version 3.0.
+# This is version 3.1.
 #
 
 require "newgetopt.pl";
-do NGetOpt("title=s","help") || &printusage ;
+do NGetOpt("title=s","help","verbose") || &printusage ;
 if ($opt_help) {&printusage};
 $title="TOC file";
 if ($opt_title ne "") {$title=$opt_title;}
+$verbose=0;
+if ($opt_verbose) {$verbose=1}
 
 $HTMLFILES       = "";
 $PDFFILES        = "";
@@ -27,7 +30,7 @@ $out = "index.html";
 open(TEMP, ">$out")
     || die("indexmaker: couldn't open tempfile $out \n");
 print TEMP "<!-- IndexMaker written by Fabrizio Pivari ";
-print TEMP "(pivari\@geocities.com) on 11/15/97 -->\n\n<HTML>\n<HEAD>\n";
+print TEMP "(pivari\@geocities.com) on 10/04/97 -->\n\n<HTML>\n<HEAD>\n";
 print TEMP "<TITLE>$title<\/TITLE>\n";
 print TEMP "<\/HEAD>\n<BODY BGCOLOR=\"\#ffffff\">\n";
 print TEMP "<H1>$title<\/H1>\n";
@@ -47,10 +50,20 @@ print TEMP "<H1>$title<\/H1>\n";
             if ($file =~ /.pdf/i) {&pdffile;}
             elsif (($file =~ /.html/i) || ($file =~ /.htm/i)) {&htmlfile;}
             elsif (($file =~ /.gif/i) || ($file =~ /jpg/i))
-               {$GRAPHICFILES .= "<LI><A HREF=\"./$file\">$file<\/A></LI>\n";}
+               {
+               $GRAPHICFILES .= "<LI><A HREF=\"./$file\">$file<\/A></LI>\n";
+               if($verbose eq 1) {print "Analizing graphic    file: $file\n";}
+               }
             elsif (($file =~ /.gz/i) || ($file =~ /.zip/i))
-               {$COMPRESSEDFILES .= "<LI><A HREF=\"./$file\">$file<\/A></LI>\n";}
-            else {$OTHERS .= qq!<LI><A HREF="./$file">$file<\/A></LI>\n!;}
+               {
+               $COMPRESSEDFILES .= "<LI><A HREF=\"./$file\">$file<\/A></LI>\n";
+               if($verbose eq 1) {print "Analizing compressed file: $file\n";}
+               }
+            else
+               {
+               $OTHERS .= qq!<LI><A HREF="./$file">$file<\/A></LI>\n!;
+               if($verbose eq 1) {print "Analizing others         : $file\n";}
+               }
             }
          }
       }
@@ -108,6 +121,7 @@ sub pdffile
    $PDFFILES .= "<LI><A HREF=\"./$file\">$title<\/A> ";
    if ($author ne "") {$PDFFILES .= "written by $author ";}
    $PDFFILES .= "<IMG SRC=\"./pdficon.gif\" WIDTH=28 HEIGHT=31>\n<\/LI>\n";
+   if($verbose eq 1) {print "Analizing PDF        file: $file\n";}
    }
 
 sub htmlfile
@@ -124,6 +138,7 @@ sub htmlfile
          }
       }
    if ($i eq 0) {$HTMLFILES .=  "<LI><A HREF=\"./$file\">$file<\/A></LI>\n";}
+   if($verbose eq 1) {print "Analizing HTML       file: $file\n";}
    }
 
 sub specialchar {
@@ -142,6 +157,7 @@ usage:
 
 where options include:
     -help                        print out this message
+    -verbose                     verbose
     -title  Title 
 
 files:
@@ -150,6 +166,7 @@ files:
 example:
     indexmaker *.pdf
     indexmaker -t "TOC example" *.pdf
+    indexmaker -v */*.html
 
 If you want to know more about this tool, you might want
 to read the docs. They came together with indexmaker!
