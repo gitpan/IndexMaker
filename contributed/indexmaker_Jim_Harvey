@@ -1,4 +1,9 @@
 #!/usr/local/bin/perl
+##
+#  modified to strip the path from displayed file 
+#  names - J. Harvey 313-983-8616
+#  this version uses table format so records are sortable.
+##
 # Require Perl5
 #
 # indexmaker -- a perl script to make index.html from PDF files,
@@ -132,6 +137,10 @@ if ($option{'INPUT_file'}) {
 my (@PDFext,@HTMLext,@VRMLext,@Graphicext,@Compressext,@Executableext);
 my $x=""; my $file=""; my $tmp=""; my $i; my @URL;
 my $url=""; my $urlfile;
+
+my $dummy="";								# added by JBH 
+my (@PDFARRAY,@GRAPHICARRAY,@COMPRESSEDARRAY,@HTMLARRAY,@OTHERSARRAY,@VRMLARRAY,@EXECUTABLEARRAY);
+
 @PDFext=split(/,/,$option{'PDF_extensions'});
 @HTMLext=split(/,/,$option{'HTML_extensions'});
 @VRMLext=split(/,/,$option{'VRML_extensions'});
@@ -193,13 +202,17 @@ EOF
        foreach $tmp (@Graphicext) {
          if ($file =~ /\.$tmp$/i) {
            if($urlfile) {
-             $GRAPHICFILES .= "<LI><A HREF=\"$url\">$url<\/A></LI>\n";
-             $verbose and print "Analysing graphic    file: $url\n";
+             $dummy = $url; $dummy =~ s/.*\///g; $dummy =~ tr /a-z/A-Z/;	# 3 lines added by JBH
+             $GRAPHICFILES = "<tr><td>$dummy<\/td><td><A HREF=\"$file\">$url<\/A><\/td><\/tr>\n";
+             push(@GRAPHICARRAY, $GRAPHICFILES);
+             $verbose and print "Analizing graphic    file: $url\n";
              unlink $file;
              }
            else {
-             $GRAPHICFILES .= "<LI><A HREF=\"$file\">$file<\/A></LI>\n";
-             $verbose and print "Analysing graphic    file: $file\n";
+             $dummy = $file; $dummy =~ s/.*\///g; $dummy =~ tr /a-z/A-Z/;	# 3 lines added by JBH
+             $GRAPHICFILES = "<tr><td>$dummy<\/td><td><A HREF=\"$file\">$file<\/A><\/td><\/tr>\n";
+             push(@GRAPHICARRAY, $GRAPHICFILES);
+             $verbose and print "Analizing graphic    file: $file\n";
              }
            next NEW;
            }
@@ -207,13 +220,17 @@ EOF
        foreach $tmp (@Compressext) {
          if ($file =~ /\.$tmp$/i) {
            if($urlfile) {
-             $COMPRESSEDFILES .= "<LI><A HREF=\"$url\">$url<\/A></LI>\n";
-             $verbose and print "Analysing compressed file: $url\n";
+             $dummy = $url; $dummy =~ s/.*\///g; $dummy =~ tr /a-z/A-Z/;	# 3 lines added by JBH
+             $COMPRESSEDFILES = "<tr><td>$dummy<\/td><td><A HREF=\"$file\">$url<\/A><\/td><\/tr>\n";
+             push(@COMPRESSEDARRAY, $COMPRESSEDFILES);
+             $verbose and print "Analizing compressed file: $url\n";
              unlink $file;
              }
            else {
-             $COMPRESSEDFILES .= "<LI><A HREF=\"$file\">$file<\/A></LI>\n";
-             $verbose and print "Analysing compressed file: $file\n";
+             $dummy = $file; $dummy =~ s/.*\///g; $dummy =~ tr /a-z/A-Z/;	# 3 lines added by JBH
+             $COMPRESSEDFILES = "<tr><td>$dummy<\/td><td><A HREF=\"$file\">$file<\/A><\/td><\/tr>\n";
+             push(@COMPRESSEDARRAY, $COMPRESSEDFILES);
+             $verbose and print "Analizing compressed file: $file\n";
              }
            next NEW;
            }
@@ -221,44 +238,91 @@ EOF
        foreach $tmp (@Executableext) {
          if ($file =~ /\.$tmp$/i) {
            if($urlfile) {
-             $EXECUTABLEFILES .= "<LI><A HREF=\"$url\">$url<\/A></LI>\n";
+             $dummy = $url; $dummy =~ s/.*\///g; $dummy =~ tr /a-z/A-Z/;
+# 3 lines added by JBH
+             $EXECUTABLEFILES .= "<tr><td>$dummy<\/td><td><A HREF=\"$file\">$url<\/A><\/td><\/tr>\n";
+             push(@EXECUTABLEARRAY, $EXECUTABLEFILES);
              $verbose and print "Analysing executable file: $url\n";
              unlink $file;
              }
            else {
-             $EXECUTABLEFILES .= "<LI><A HREF=\"$file\">$file<\/A></LI>\n";
+             $dummy = $file; $dummy =~ s/.*\///g; $dummy =~ tr /a-z/A-Z/;
+# 3 lines added by JBH
+             $EXECUTABLEFILES .= "<tr><td>$dummy<\/td><td><A HREF=\"$file\">$file<\/A><\/td><\/tr>\n";
+             push(@EXECUTABLEARRAY, $EXECUTABLEFILES);
              $verbose and print "Analysing executable file: $file\n";
              }
            next NEW;
            }
          }
        if($urlfile) {
-         $OTHERS .= qq!<LI><A HREF="$url">$url<\/A></LI>\n!;
-         $verbose and print "Analysing others         : $url\n";
+         $dummy = $url; $dummy =~ s/.*\///g; $dummy =~ tr /a-z/A-Z/;	# 3 lines added by JBH
+         $OTHERS = "<tr><td>$dummy<\/td><td><A HREF=\"$file\">$url<\/A><\/td><\/tr>\n";
+         push(@OTHERSARRAY, $OTHERS);
+         $verbose and print "Analizing others         : $url\n";
          unlink $file;
        }
        else {
-         $OTHERS .= qq!<LI><A HREF="$file">$file<\/A></LI>\n!;
-         $verbose and print "Analysing others         : $file\n";
+         $dummy = $file; $dummy =~ s/.*\///g; $dummy =~ tr /a-z/A-Z/;	# 3 lines added by JBH
+         $OTHERS = "<tr><td>$dummy<\/td><td><A HREF=\"$file\">$file<\/A><\/td><\/tr>\n";
+         push(@OTHERSARRAY, $OTHERS);
+         $verbose and print "Analizing others         : $file\n";
          }
        }
      }
 else {printusage();}
 
-$HTMLFILES and print OUT "<H2>HTML files</H2>\n<UL>\n$HTMLFILES\n<\/UL>\n";
-if ($PDFFILES) {
-  print OUT <<EOF;
-<H2>PDF files <A HREF="http://www.adobe.com/prodindex/acrobat/readstep.html">
-<IMG BORDER=0 SRC="$option{'GIF_getacrobat'}" WIDTH=88 HEIGHT=31></A></H2>
-<UL>
-$PDFFILES</UL>
-EOF
+# this print section changed to output sorted arrays of table records by JBH
+
+if ($HTMLFILES) {
+  @HTMLARRAY = sort (@HTMLARRAY);
+  print OUT "<H2>HTML files</H2>\n<table border=2>\n";
+  while ($HTMLFILES = shift (@HTMLARRAY)) { print OUT $HTMLFILES; }
+  print OUT "<\/table>\n";
   }
-$VRMLFILES and print OUT "<H2>VRML files</H2>\n<UL>\n$VRMLFILES\n<\/UL>\n";
-$GRAPHICFILES and print OUT "<H2>Graphic files</H2>\n<UL>\n$GRAPHICFILES\n<\/UL>\n";
-$COMPRESSEDFILES and print OUT "<H2>Compressed files</H2>\n<UL>\n$COMPRESSEDFILES\n<\/UL>\n";
-$EXECUTABLEFILES and print OUT "<H2>Executable files</H2>\n<UL>\n$EXECUTABLEFILES\n<\/UL>\n";
-$OTHERS and print OUT "<H2>Others</H2>\n<UL>\n$OTHERS\n<\/UL>\n";
+
+if ($PDFFILES) {
+  @PDFARRAY = sort (@PDFARRAY);
+  print OUT "<H2>PDF files</H2>\n<table border=2>\n";
+  while ($PDFFILES = shift (@PDFARRAY)) { print OUT $PDFFILES; }
+  print OUT "<\/table>\n";
+  }
+
+if ($GRAPHICFILES) {
+  @GRAPHICARRAY = sort (@GRAPHICARRAY);
+  print OUT "<H2>Graphic files</H2>\n<table border=2>\n";
+  while ($GRAPHICFILES = shift (@GRAPHICARRAY)) { print OUT $GRAPHICFILES; }
+  print OUT "<\/table>\n";
+  }
+
+if ($VRMLFILES) {
+  @VRMLARRAY = sort (@VRMLARRAY);
+  print OUT "<H2>VRML files</H2>\n<table border=2>\n";
+  while ($VRMLFILES = shift (@VRMLARRAY)) { print OUT $VRMLFILES; }
+  print OUT "<\/table>\n";
+  }
+
+if ($COMPRESSEDFILES) {
+  @COMPRESSEDARRAY = sort (@COMPRESSEDARRAY);
+  print OUT "<H2>COMPRESSED files</H2>\n<table border=2>\n";
+  while ($COMPRESSEDFILES = shift (@COMPRESSEDARRAY)) { print OUT $COMPRESSEDFILES; }
+  print OUT "<\/table>\n";
+  }
+
+if ($EXECUTABLEFILES) {
+  @EXECUTABLEARRAY = sort (@EXECUTABLEARRAY);
+  print OUT "<H2>EXECUTABLE files</H2>\n<table border=2>\n";
+  while ($EXECUTABLEFILES = shift (@EXECUTABLEARRAY)) { print OUT $EXECUTABLEFILES; }
+  print OUT "<\/table>\n";
+  }
+
+if ($OTHERS) {
+  @OTHERSARRAY = sort (@OTHERSARRAY);
+  print OUT "<H2>Others</H2>\n<table border=2>\n";
+  while ($OTHERS = shift (@OTHERSARRAY)) { print OUT $OTHERS; }
+  print OUT "<\/table>\n";
+  }
+
 print OUT "<\/BODY>\n<\/HTML>\n";
 close(OUT);
 
@@ -276,17 +340,24 @@ sub pdffile {
   $description=&specialchar($description);
   !$title and $title=$file;
   if($urlfile){
-    $PDFFILES .= "<LI><A HREF=\"$url\">$title<\/A> ";
-    $verbose and print "Analysing PDF        file: $url\n";
+    $dummy = $file; $dummy =~ s/.*\///g; $dummy =~ tr /a-z/A-Z/;	# 3 lines added by JBH
+    $PDFFILES = "<tr><td>$dummy<\/td><td><A HREF=\"$file\">$file<\/A><\/td><\/tr>\n";
+    push(@PDFARRAY, $PDFFILES);
+    $verbose and print "Analizing PDF        file: $url\n";
     unlink $file;
     }
   else {
-    $PDFFILES .= "<LI><A HREF=\"$file\">$title<\/A> ";
-    $verbose and print "Analysing PDF        file: $file\n";
+    $dummy = $file; $dummy =~ s/.*\///g; $dummy =~ tr /a-z/A-Z/;	# 3 lines added by JBH
+    $PDFFILES = "<tr><td>$dummy<\/td><td><A HREF=\"$file\">$file<\/A><\/td><\/tr>\n";
+    push(@PDFARRAY, $PDFFILES);
+    $verbose and print "Analizing PDF        file: $file\n";
     }
-  $author and $PDFFILES .= "written by $author ";
-  $description and $PDFFILES .= "<BR>\nDescription: $description\n";
-  $PDFFILES .= "<IMG SRC=\"$option{'GIF_pdficon'}\" WIDTH=34 HEIGHT=20>\n<\/LI>\n";
+
+# commented out by JBH didn't want this in the output records.
+# $author and $PDFFILES .= "written by $author ";
+# $description and $PDFFILES .= "<BR>\nDescription: $description\n";
+# $PDFFILES .= "<IMG SRC=\"$option{'GIF_pdficon'}\" WIDTH=34 HEIGHT=20>\n<\/LI>\n";
+
   }
 
 sub htmlfile {
@@ -308,13 +379,17 @@ sub htmlfile {
     }
   !$title and $title=$file;
   if($urlfile){
-    $HTMLFILES .=  "<LI><A HREF=\"$url\">$title<\/A> ";
-    $verbose and print "Analysing HTML       file: $url\n";
+    $dummy = $title; $dummy =~ s/.*\///g; $dummy =~ tr /a-z/A-Z/;	#  3 lines added by JBH
+    $HTMLFILES = "<tr><td>$dummy<\/td><td><A HREF=\"$url\">$file<\/A><\/td><\/tr>\n";
+    push(@HTMLARRAY, $HTMLFILES);
+    $verbose and print "Analizing HTML       file: $url\n";
     unlink $file;
     }
   else {
-    $HTMLFILES .=  "<LI><A HREF=\"$file\">$title<\/A> ";
-    $verbose and print "Analysing HTML       file: $file\n";
+    $dummy = $title; $dummy =~ s/.*\///g; $dummy =~ tr /a-z/A-Z/;	# 3 lines added by JBH
+    $HTMLFILES = "<tr><td>$dummy<\/td><td><A HREF=\"$file\">$file<\/A><\/td><\/tr>\n";
+    push(@HTMLARRAY, $HTMLFILES);
+    $verbose and print "Analizing HTML       file: $file\n";
     }
   $author and $HTMLFILES .= "written by $author";
   $description and $HTMLFILES .= "<BR>\nDescription: $description\n";
@@ -340,13 +415,17 @@ sub vrmlfile {
     }
   !$title and $title = $file;
   if($urlfile){
-    $VRMLFILES .= "<LI><A HREF=\"$url\">$title<\/A> $description\n</LI>\n";
-    $verbose and print "Analysing VRML       file: $url\n";
+    $dummy = $title; $dummy =~ s/.*\///g; $dummy =~ tr /a-z/A-Z/;	# 3 lines added by JBH
+    $VRMLFILES = "<tr><td>$dummy<\/td><td><A HREF=\"$url\">$title<\/A><\/td><\/tr>\n";
+    push(@VRMLARRAY, $VRMLFILES);
+    $verbose and print "Analizing VRML       file: $url\n";
     unlink $file;
     }
   else {
-    $VRMLFILES .= "<LI><A HREF=\"$file\">$title<\/A> $description\n</LI>\n";
-    $verbose and print "Analysing VRML       file: $file\n";
+    $dummy = $title; $dummy =~ s/.*\///g; $dummy =~ tr /a-z/A-Z/;	# 3 lines added by JBH
+    $VRMLFILES = "<tr><td>$dummy<\/td><td><A HREF=\"$file\">$title<\/A><\/td><\/tr>\n";
+    push(@VRMLARRAY, $VRMLFILES);
+    $verbose and print "Analizing VRML       file: $file\n";
     }
   }
 

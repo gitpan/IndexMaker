@@ -1,0 +1,20 @@
+Thanks for doing this Perl program.  I have a web page at work that
+contains maps of various networks, these all have a common file name
+format six character identifier.  The page is a series of directorys by
+state, city, etc.  I had been looking for a way to build an index of the
+map files recursively.  Attached is your script as I have modified it. 
+It is almost done but I thought it might be useful in it's current
+state.  
+
+The changes I made prune off the path from the file name, this is used
+as a sort key for Graphics and PDF catagorys.  To make sorting easy, I
+converted the format to a table so the sort key comes first.  I also had
+to convert the file name accumulation to an array rather than the single
+long string you were using.
+
+The maps are all in PDF or GIF format and the final change will merge
+those two catagorys in your program.  This is my first excursion into
+Perl, thanks again for the code & long live Linux!
+
+Jim Harvey, Redford, Mich.
+<wb8nbs@ameritech.net>

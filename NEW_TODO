@@ -1,6 +1,0 @@
-New: supporto per il proxy (al momento solo http e anonymous)
-     maggiori informazioni in verbose
-
-Da fare: supporto per il proxy via ftp
-         configurazione proxy nel file di configurazione
-         input file (da opzione e da file di configurazione)
