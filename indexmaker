@@ -9,7 +9,7 @@
 # clearly mark an altered version.  Fixes and enhancements cheerfully 
 # accepted.
 #
-# This is version 1.0.
+# This is version 1.1.
 #
 
 require "newgetopt.pl";
@@ -35,6 +35,7 @@ print TEMP "<H1>$title<\/H1>\n<UL>\n";
          $dir = &dirname($x);
          close(STDIN);
          $i=0;
+         $author="";
          if (!open(STDIN, "$file"))
             {print STDERR "indexmaker: couldn't open $x for input\n";exit(1);}
          else
@@ -64,16 +65,21 @@ sub pdffile
    {
    while (<STDIN>)
       {
-      if (/^\/Author \((.*)\)/) {$author=$1;}
-      if((/^\/Title \((.*)\)/) && ($i ==0)) 
-         {
-         print qq!<LI><A HREF="./$file">$1<\/A> !;
-         if ($author ne "") {print "written by $author ";}
-         print qq!<IMG SRC="./pdficon.gif" WIDTH=28 HEIGHT=31>\n<\/LI>\n!;
-         $i=1;
-         }
+      if (/^\/Author \((.*)\)/) {$author=&specialchar($1);}
+      if((/^\/Title \((.*)\)/) && ($i ==0)) {$title=&specialchar($1); $i=1;}
       }
+   print qq!<LI><A HREF="./$file">$title<\/A> !;
+   if ($author ne "") {print "written by $author ";}
+   print qq!<IMG SRC="./pdficon.gif" WIDTH=28 HEIGHT=31>\n<\/LI>\n!;
    }
+
+sub specialchar {
+    local($char) = @_;
+    $char =~ s/&/&amp/;
+    $char =~ s/</&lt/;
+    $char =~ s/>/&gt/;
+    return($char);
+    }
 
 sub printusage {
     print <<USAGEDESC;

@@ -1,2 +1,7 @@
 10/04/97 Version 1.0
 First public realese
+
+10/20/97 Version 1.1
+Bug fix: now /Author field can be placed also after first /Title field
+Special Characters: & -> &amp, > -> &gt, < -> &lt
+Thanks to A.Gale@RD.tei.ericsson.se (Gale Andrew)

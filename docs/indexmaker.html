@@ -1,5 +1,6 @@
 <!-- INDEXMAKER: a perl script to make an index from some PDF files designed by
-Fabrizio Pivari (Pivari@geocities.com) on 10/04/97<HTML>
+Fabrizio Pivari (Pivari@geocities.com) on 10/04/97-->
+
 <HTML>
 <HEAD>
 <META Name="Author" Content="Fabrizio Pivari">
@@ -9,11 +10,11 @@ Fabrizio Pivari (Pivari@geocities.com) on 10/04/97<HTML>
 <BODY BGCOLOR="#ffffff">
 <H1>An index.html maker from PDF files</H1>
 <H2>by <A HREF="mailto:Pivari@geocities.com">Fabrizio Pivari</A></H2>
-<H4>version 1.0 1997/10/04</H4>
+<H4>version 1.1 1997/10/20</H4>
 
 IndexMaker is a simple script PERL to make an index.html file from PDF file.
 It should work with PERL 4 and 5.
-At the moment, it uses the /Author fild and the first /Title fild in every
+At the moment, it uses the /Author field and the first /Title field in every
 matched PDF files.<P>
 
 <A HREF="IndexMaker.tar.gz">Source Code</A><BR>
@@ -37,7 +38,15 @@ files:
 example:
     indexmaker *.pdf
     indexmaker -t "TOC example" *.pdf
-</PRE>
+</PRE><P>
+
+What's new with version 1.1:
+<UL>
+<LI>Bug fix: now /Author field can be placed also after the first /Title field
+<LI>Special Characters: &amp -&gt &ampamp, &gt -&gt &ampgt, &lt -&gt &amplt Than
+ks to
+<A HREF="mailto:A.Gale@RD.tei.ericsson.se">Gale Andrew</A>
+</UL>
 
 <HR>
 <CENTER><A HREF="/">Home Page</A></CENTER>
