@@ -1,5 +1,5 @@
 <!-- IndexMaker: a perl script to make an index from PDF, HTML, VRML and other
-files designed by Fabrizio Pivari (Pivari@geocities.com) on 12/12/97-->
+files designed by Fabrizio Pivari (Pivari@geocities.com) on 12/19/97-->
 
 <HTML>
 <HEAD>
@@ -10,14 +10,21 @@ files designed by Fabrizio Pivari (Pivari@geocities.com) on 12/12/97-->
 <BODY BGCOLOR="#ffffff">
 <H1>An index.html maker from PDF, HTML, VRML and other files</H1>
 <H2>by <A HREF="mailto:Pivari@geocities.com">Fabrizio Pivari</A></H2>
-<H4>version 3.3 1997/12/12</H4>
+<H4>version 4.0 1997/12/19</H4>
 
 IndexMaker is a simple script PERL to make an index.html file from PDF files,
-HTML files, VRML files and other files.
-It should work with PERL 4 and 5.<BR>
-It uses the /Author field and the first /Title field in every
-matched PDF files, the &ltTITLE&gt &lt;/TITLE&gt field in every matched HTML files and
-the name of the file in the others.<P>
+HTML files, VRML files and other files.<BR>
+At the moment, it uses
+<UL>
+<LI>the /Author field, the first /Title field and the /Subject field in every
+matched PDF files
+<LI>the &lt;TITLE&gt; &lt;/TITLE&gt; field and  the META Description and Author fields
+in every matched HTML files
+<LI>the Info node field in every matched VRML 1.0 files
+<LI>the WorldInfo node field info and title in every matched VRML 2.0 files
+<LI>the name of the file in the others
+</UL>
+It should work with PERL 4 and 5.<P>
 
 <A HREF="IndexMaker.tar.gz">Source Code</A><BR>
 <IMG SRC="new.gif" WIDTH=28 HEIGHT=11>You can also find the source code at
@@ -90,6 +97,14 @@ What's new with version 3.3:
 <LI>In HTML files now the program searchs the META Description and Author fields</LI>
 <LI>Added docs/HTML_META.notes</LI>
 <LI>Added tests directory</LI>
+</UL>
+
+What's new with version 4.0:
+<UL>
+<LI>Added the check to /Subject field in PDF files
+</LI>
+<LI>Now /Author, /Title, /Subject fields can be multiline fields</LI>
+<LI>Added a configuration file: option -c file (Default indexmaker.cfg)</LI>
 </UL>
 
 

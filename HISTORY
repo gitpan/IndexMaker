@@ -34,3 +34,8 @@ In HTML files now the program searchs the META Description and Author fields
 Added docs/HTML_META.notes
 Bugfixes
 Added tests
+
+12/19/97 Version 4.0
+Added the check to /Subject field in PDF files
+Now /Author, /Title, /Subject fields can be multiline fields
+Added a configuration file: option -c file (Default indexmaker.cfg)

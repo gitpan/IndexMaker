@@ -3,22 +3,41 @@
 #
 # indexmaker -- a perl script to make index.html from PDF files
 #
-# by Fabrizio Pivari <pivari@geocities.com> 12 Dicember 1997
+# by Fabrizio Pivari <pivari@geocities.com> 19 Dicember 1997
 #
 # Copy, use, and redistribute freely, but don't take my name off it and
 # clearly mark an altered version.  Fixes and enhancements cheerfully 
 # accepted.
 #
-# This is version 3.3.
+# This is version 4.0.
 #
 
+$version="4.0";
+$opt_configure="./indexmaker.cfg";
 require "newgetopt.pl";
-do NGetOpt("title=s","help","verbose") || &printusage ;
+do NGetOpt("configure=s","help","verbose") || &printusage ;
+@elem=("META_AuthorName","META_AuthorMail","META_Keywords","META_Description",
+       "TITLE_title");
+%option=(
+      META_AuthorName => 'Fabrizio Pivari',
+      META_AuthorMail => 'Fabrizio.Pivari@agip.it',
+      META_Keywords => 'index, maker, HTML, PDF, VRML',
+      META_Description => 'index.html made br IndexMaker 4.0',
+      TITLE_title => 'TOC file made by IndexMaker 4.0');
+
 if ($opt_help) {&printusage};
-$title="TOC file";
-if ($opt_title ne "") {$title=$opt_title;}
 $verbose=0;
 if ($opt_verbose) {$verbose=1}
+open (CNF, "$opt_configure") || die "Error: $opt_configure - $!\n";
+while (<CNF>)
+   {
+   s/\t/ /g;  #replace tabs by space
+   next if /^[ \t]*\#/; #ignore comment lines
+   next if /^[ \t]*$/;  #ignore empty lines
+   foreach $elem (@elem) 
+      {if (/[ \t]*$elem[ \t]*:[ \t]*(.*)/i) {$option{$elem}=$1;}}
+   }
+close(CNF);
 
 $HTMLFILES       = "";
 $PDFFILES        = "";
@@ -31,18 +50,18 @@ open(TEMP, ">$out")
     || die("indexmaker: couldn't open tempfile $out \n");
 print TEMP <<EOF;
 <!doctype HTML public "-//W3O//DTD W3 HTML 3.2//EN">
-<!-- Made by IndexMaker 3.3 written by Fabrizio Pivari (pivari\@geocities.com)
-on 12/12/97 -->
+<!-- Made by IndexMaker $version written by Fabrizio Pivari (pivari\@geocities.com)
+on 11/01/97 -->
 <HTML>
 <HEAD>
-<LINK REL="Author" HREF=mailto:pivari\@geocities.com>
-<META NAME="Author" CONTENT="Fabrizio Pivari">
-<META NAME="Keywords" CONTENT="index, maker, HTML, PDF, VRML">
-<META NAME="Description" CONTENT="index.html made by IndexMaker 3.3">
-<TITLE>$title</TITLE>
+<LINK REL="Author" HREF=mailto:$option{'META_AuthorMail'}>
+<META NAME="Author" CONTENT="$option{'META_AuthorName'}">
+<META NAME="Keywords" CONTENT="$option{'META_Keywords'}">
+<META NAME="Description" CONTENT="$option{'META_Description'}">
+<TITLE>$option{'TITLE_title'}</TITLE>
 </HEAD>
 <BODY BGCOLOR="\#ffffff">
-<H1>$title</H1>
+<H1>$option{'TITLE_title'}</H1>
 EOF
 
    if (@ARGV)
@@ -53,7 +72,7 @@ EOF
          $dir = &dirname($x);
          $i=0;
          $author=""; $title=""; $description=""; $VRML=""; $TITLE="";
-         $META="";
+         $DESCRIPTION=""; $PDF=""; $META=""; $AUTHOR="";
          if (!open(STDIN, "$file"))
             {print STDERR "indexmaker: couldn't open $x for input\n";exit(1);}
          else
@@ -63,17 +82,17 @@ EOF
             elsif (($file =~ /.vrml/i) || ($file =~ /.vrl/i)) {&vrmlfile;}
             elsif (($file =~ /.gif/i) || ($file =~ /jpg/i))
                {
-               $GRAPHICFILES .= "<LI><A HREF=\"./$file\">$file<\/A></LI>\n";
+               $GRAPHICFILES .= "<LI><A HREF=\"$file\">$file<\/A></LI>\n";
                if($verbose eq 1) {print "Analizing graphic    file: $file\n";}
                }
             elsif (($file =~ /.gz/i) || ($file =~ /.zip/i))
                {
-               $COMPRESSEDFILES .= "<LI><A HREF=\"./$file\">$file<\/A></LI>\n";
+               $COMPRESSEDFILES .= "<LI><A HREF=\"$file\">$file<\/A></LI>\n";
                if($verbose eq 1) {print "Analizing compressed file: $file\n";}
                }
             else
                {
-               $OTHERS .= qq!<LI><A HREF="./$file">$file<\/A></LI>\n!;
+               $OTHERS .= qq!<LI><A HREF="$file">$file<\/A></LI>\n!;
                if($verbose eq 1) {print "Analizing others         : $file\n";}
                }
             }
@@ -134,12 +153,35 @@ sub pdffile
    {
    while (<STDIN>)
       {
-      if (/^\/Author *\((.*)\)/) {$author=&specialchar($1);}
-      if((/^\/Title *\((.*)\)/) && ($i ==0)) {$title=&specialchar($1); $i=1;}
+      if (/\/Author/i .. /\)/)
+         {
+         $AUTHOR.=$_;
+         $AUTHOR=~s/\n/ /;
+         if ($AUTHOR=~/\/Author.*\(([^\(]*)\)/i)
+            {$author=&specialchar($1);}
+         }
+      if (/\/Subject/i .. /\)/)
+         {
+         $DESCRIPTION.=$_;
+         $DESCRIPTION=~s/\n/ /;
+         if ($DESCRIPTION=~/\/Subject.*\(([^\(]*)\)/i)
+            {$description=&specialchar($1);}
+         }
+      if ((/\/Title/i .. /\)/) && ($i ==0))
+         {
+         $TITLE.=$_;
+         $TITLE=~s/\n/ /;
+         if ($TITLE=~/\/Title.*\(([^\(]*)\)/i)
+            {
+            $title=&specialchar($1);
+            $i=1;
+            }
+         }
       }
    if ($title eq "") {$title=$file;}
-   $PDFFILES .= "<LI><A HREF=\"./$file\">$title<\/A> ";
+   $PDFFILES .= "<LI><A HREF=\"$file\">$title<\/A> ";
    if ($author ne "") {$PDFFILES .= "written by $author ";}
+   if($description ne "") {$PDFFILES .= "<BR>\nDescription: $description\n";}
    $PDFFILES .= "<IMG SRC=\"./pdficon.gif\" WIDTH=28 HEIGHT=31>\n<\/LI>\n";
    if($verbose eq 1) {print "Analizing PDF        file: $file\n";}
    }
@@ -166,7 +208,7 @@ sub htmlfile
          }
       }
    if ($title eq "") {$title=$file;}
-   $HTMLFILES .=  "<LI><A HREF=\"./$file\">$title<\/A> ";
+   $HTMLFILES .=  "<LI><A HREF=\"$file\">$title<\/A> ";
    if($author ne "") {$HTMLFILES .= "written by $author";}
    if($description ne "") {$HTMLFILES .= "<BR>\nDescription: $description\n";}
    $HTMLFILES .= "</LI>\n";
@@ -196,7 +238,7 @@ sub vrmlfile
          }
       }
    if ($title eq "") {$title = $file;}
-   $VRMLFILES .= "<LI><A HREF=\"./$file\">$title<\/A> $description\n";
+   $VRMLFILES .= "<LI><A HREF=\"$file\">$title<\/A> $description\n";
    $VRMLFILES .= "</LI>\n";
    if($verbose eq 1) {print "Analizing VRML       file: $file\n";}
    }
@@ -218,14 +260,14 @@ usage:
 where options include:
     -help                        print out this message
     -verbose                     verbose
-    -title  Title 
+    -configure file              Default indexmaker.cfg
 
 files:
     with files you can use metacharacters and relative and absolute path name
     
 example:
     indexmaker *.pdf
-    indexmaker -t "TOC example" *.pdf
+    indexmaker -c tests/test.cfg *.pdf
     indexmaker -v */*.html
 
 If you want to know more about this tool, you might want
