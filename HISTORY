@@ -1,3 +1,7 @@
+04/05/98 Version 6.1
+In configuration file you can customize your e-mail address like password
+for anonymous ftp
+
 03/29/98 Version 6.0
 FTP support with libnet module
 http://www.connect.net/gbarr/libnet

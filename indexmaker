@@ -4,13 +4,13 @@
 # indexmaker -- a perl script to make index.html from PDF files,
 #               HTML files, VRML files and other files.
 #
-# by Fabrizio Pivari <pivari@geocities.com> 29 March 1998
+# by Fabrizio Pivari <pivari@geocities.com> 5 April 1998
 #
 # Copy, use, and redistribute freely, but don't take my name off it and
 # clearly mark an altered version.  Fixes and enhancements cheerfully 
 # accepted.
 #
-# This is version 6.0.
+# This is version 6.1.
 #
 use strict;
 use Getopt::Long;
@@ -20,9 +20,7 @@ use PDF;
 # libnet http://www.connect.net/gbarr/libnet/
 use Net::FTP;
 
-# Remember to change the generic e-mail with yours!
-my $user="test\@test.com";
-my $version="6.0";
+my $version="6.1";
 my $configure="indexmaker.cfg";
 my $output="index.html";
 my $recursive="";
@@ -37,11 +35,12 @@ do GetOptions("configure=s" => \$configure,
               "match=s"     => \$match,
               "help"        => \$help,
               "verbose"     => \$verbose) || printusage() ;
-@elem=("OUTPUT_file","META_AuthorName","META_AuthorMail","META_Keywords",
-       "META_Description","TITLE_title","GIF_pdficon","GIF_getacrobat",
-       "PDF_extensions","HTML_extensions","VRML_extensions",
+@elem=("OUTPUT_file","YOUR_email","META_AuthorName","META_AuthorMail",
+       "META_Keywords","META_Description","TITLE_title","GIF_pdficon",
+       "GIF_getacrobat","PDF_extensions","HTML_extensions","VRML_extensions",
        "Graphic_extensions","Compress_extensions");
 %option=(OUTPUT_file         => 'index.html',
+         YOUR_email          => 'yourname@yourhost.com',
          META_AuthorName     => 'Fabrizio Pivari',
          META_AuthorMail     => 'pivari@geocities.com',
          META_Keywords       => 'index, maker, HTML, PDF, VRML',
@@ -126,7 +125,13 @@ NEW: foreach $x (@ARGV) {
          $directory.="/";
          $directory.=join ("/",@FTP[1..($#FTP-1)]);
          $ftp = Net::FTP->new("$FTP[$0]");
-         $ftp->login("anonymous",$user);
+         if($option{'YOUR_email'} eq "yourname\@yourhost.com") {
+           print <<EOF;
+WARNING: you are using yourname\@yourhost.com like password for anonymous ftp.
+Change it in the configuration file with your e-mail address!
+EOF
+           }
+         $ftp->login("anonymous",$option{'YOUR_email'});
          $ftp->cwd("$directory");
          $ftp->get("$FTP[$#FTP]");
          $ftp->quit;
