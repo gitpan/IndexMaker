@@ -1,5 +1,5 @@
 <!-- IndexMaker: a perl script to make an index from PDF, HTML, VRML and other
-files designed by Fabrizio Pivari (Pivari@geocities.com) on 03/29/98-->
+files designed by Fabrizio Pivari (Pivari@geocities.com) on 04/25/98-->
 
 <HTML>
 <HEAD>
@@ -14,7 +14,7 @@ files designed by Fabrizio Pivari (Pivari@geocities.com) on 03/29/98-->
 <TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=4 BGCOLOR=silver><TR><TD>
 <FONT SIZE=+3><B>IndexMaker</B></FONT>
 </TD></TR></TABLE>
-<H3>Version 6.1 5th April 1998</H3>
+<H3>Version 6.6 25th April 1998</H3>
 <TABLE CELLSPACING=0 CELLPADDING=4><TR>
   <TD VALIGN=top>Programming by</TD>
   <TD>
@@ -53,7 +53,8 @@ in every matched HTML files
 <LI>the name of the file in the others
 </UL>
 From version 5.2 IndexMaker can scan the files in a directory recursively.<BR>
-From version 6.0 IndexMaker can index files via FTP.
+From version 6.0 IndexMaker can index files via FTP.<BR>
+From version 6.5 IndexMaker can index files via HTTP.<BR>
 From version 5.0 IndexMaker requires PERL 5.xxx.<P>
 
 <TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=4 BGCOLOR=silver><TR><TD>
@@ -84,6 +85,12 @@ From version 5.0 IndexMaker requires PERL 5.xxx.<P>
       or CPAN</P>
   </LI>
 
+  <LI><P>Get the latest Version of libwww module from:<BR>
+      <A HREF="http://www.sn.no/libwww-perl/">
+      http://www.sn.no/libwww-perl/</A>
+      or CPAN</P>
+  </LI>
+
   <LI>
       <P>Create your personal indexmaker.cfg file.<BR>
       In the configuration file (default indexmaker.cfg) there are two fields
@@ -92,8 +99,10 @@ From version 5.0 IndexMaker requires PERL 5.xxx.<P>
       the value of the variable.
       This is the list of the variables supported:
       <UL>
-      <LI>OUTPUT_file (default index.htmt). You can also use -output
+      <LI>OUTPUT_file (default index.html). You can also use -output
       parameter to change the value of this variable.</LI>
+      <LI>proxy. You can set your PROXY host in URL mode. e.g.
+      http://your.proxy.com:8080 <IMG SRC="new.gif" WIDTH=28 HEIGHT=11></LI>
       <LI>YOUR_email. You have to customize your e-mail address like password
       for anonymous ftp</LI>
       <LI>GIF_pdficon this icon is used in the output file</LI>
@@ -134,6 +143,7 @@ where options include:
 list:
     with list you can use metacharacters and relative and absolute path name
     and ftp URL like ftp://ftp.host.com/directory/file
+    and http URL like http://www.host.com/directory/file
    
 example:
     indexmaker *.pdf
@@ -148,21 +158,30 @@ example:
 </TD></TR></TABLE>
 
 <UL>
-<LI>In configuration file you can customize your e-mail address like password
-for anonymous ftp</LI>
+<LI>PROXY support</LI>
 </UL>
 Here you can find an exhaustive <A HREF="indexmakerH.html">history file</A><P>
 
 <TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=4 BGCOLOR=silver><TR><TD>
 <FONT SIZE=+1>Source</FONT>
 </TD></TR></TABLE>
-<A HREF="IndexMaker.tar.gz">Source Code: the last release 6.1</A><BR>
+<A HREF="IndexMaker.tar.gz">Source Code: the last release 6.6</A><BR>
+<A HREF="IndexMaker-6.1.tar.gz">Source Code: the last release without libwww-perl-5 6.1</A><BR>
 <A HREF="IndexMaker-5.3.tar.gz">Source Code: the last release without libnet 5.3</A><BR>
 <A HREF="IndexMaker-4.3.tar.gz">Source Code: the last release with PERL 4.xxx
 support 4.3</A><BR>
 You can also find the source code at
 <A HREF="http://www.perl.org/CPAN/authors/Fabrizio_Pivari">
 CPAN authors/Fabrizio_Pivari/</A><P>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=4 BGCOLOR=silver><TR><TD>
+<FONT SIZE=+1>Example <IMG SRC="new.gif" WIDTH=28 HEIGHT=11></FONT>
+</TD></TR></TABLE>
+<P>
+On my worstation behind the firewall I generated
+<A HREF=myindexgeocities.html>this index</A> of some pages
+of my Geocities Home page.<BR>
+I use the new PROXY feauture.
 
 </BODY>
 </HTML>

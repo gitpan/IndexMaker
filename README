@@ -6,6 +6,7 @@ The modules you need:
 PDF library 1.05 http://www.geocities.com/CapeCanaveral/Hangar/4794/
 written by Antonio Rosella mailto:antro@technologist.com
 libnet http://www.connect.net/gbarr/libnet/
+libwww http://www.sn.no/libwww-perl/
 
 This is the sintax
 
@@ -24,6 +25,7 @@ where options include:
 list:
     with list you can use metacharacters and relative and absolute path name
     and ftp URL like ftp://ftp.host.com/directory/file
+    and http URL like http://www.host.com/directory/file
    
 example:
     indexmaker *.pdf
@@ -42,6 +44,5 @@ Enjoy it!
 Send me your suggestions.
 
 Fabrizio Pivari
-mailto:Pivari@hotmail.com
 mailto:Pivari@geocities.com
 Home: http://www.geocities.com/CapeCanaveral/Lab/3469

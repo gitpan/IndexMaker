@@ -1,3 +1,10 @@
+04/25/98 Version 6.6
+PROXY support
+
+04/14/98 Version 6.5
+HTTP support with libwww
+http://www.sn.no/libwww-perl/
+
 04/05/98 Version 6.1
 In configuration file you can customize your e-mail address like password
 for anonymous ftp
