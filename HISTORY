@@ -54,3 +54,8 @@ Changed the pdficon.gif image
 In the configure file now it's possible to describe the extensions of the
 categories  HTML files, PDF files, VRML files, Graphic files, Compressed files,
 Others
+
+03/01/98 Version 5.0
+The code was rewrited in PERL 5.xxx mode
+Now I don't support directly PDF. I use the new PDF libray v.1.04
+of Antonio Rosella http://www.geocities.com/CapeCanaveral/Hangar/4794/

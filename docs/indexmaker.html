@@ -1,5 +1,5 @@
 <!-- IndexMaker: a perl script to make an index from PDF, HTML, VRML and other
-files designed by Fabrizio Pivari (Pivari@geocities.com) on 02/22/98-->
+files designed by Fabrizio Pivari (Pivari@geocities.com) on 03/01/98-->
 
 <HTML>
 <HEAD>
@@ -13,7 +13,7 @@ files designed by Fabrizio Pivari (Pivari@geocities.com) on 02/22/98-->
 <TR>
 <TD  VALIGN=top ALIGN=left>
 <H2>by <A HREF="mailto:Pivari@geocities.com">Fabrizio Pivari</A></H2>
-<H4>version 4.3 1998/02/22</H4>
+<H4>version 5.0 1998/03/01</H4>
 
 IndexMaker is a PERL script to make an index.html file from PDF files,
 HTML files, VRML files and other files.<BR>
@@ -35,7 +35,13 @@ in every matched HTML files
 </TR>
 </TABLE>
 
-It should work with PERL 4 and 5.<P>
+From version 5.0 IndexMaker requires PERL 5.xxx.<BR>
+This is the list of modules you require:
+<UL>
+<LI><A HREF="http://www.geocities.com/CapeCanaveral/Hangar/4794/">PDF libray v.1.04</A>
+by Antonio Rosella</LI>
+</UL>
+You can find all the modules also at CPAN.<P>
 
 This is the sintax
 
@@ -79,17 +85,19 @@ parameter to change the value of this variable.</LI>
 <LI>VRML_extensions lists of extensions for VRML files</LI>
 <LI>Graphic_extensions lists of extensions for Graphic files</LI>
 <LI>Compress_extensions lists of extensions for Compressed files</LI>
-
 </UL>
 
 <UL>
-What's new with version 4.3:
-<LI>In the configure file now it's possible to describe the extensions of the
-categories  HTML files, PDF files, VRML files, Graphic files, Compressed files,
-Others</LI>
+What's new with version 5.0:
+<LI>The code was rewrited in PERL 5.xxx mode</LI>
+<LI>Now it doesn't support directly PDF. I use the new
+<A HREF="http://www.geocities.com/CapeCanaveral/Hangar/4794/">PDF libray v.1.04</A>
+by Antonio Rosella</LI>
 </UL>
 <A HREF="indexmakerH.html">History file</A><P>
-<A HREF="IndexMaker.tar.gz">Source Code</A><BR>
+<A HREF="IndexMaker.tar.gz">Source Code: the last release 5.0</A><BR>
+<A HREF="IndexMaker4.3.tar.gz">Source Code: the last release that support
+PERL 4.xxx 4.3</A><BR>
 You can also find the source code at
 <A HREF="http://www.perl.org/CPAN/authors/Fabrizio_Pivari">
 CPAN authors/Fabrizio_Pivari/</A><P>
