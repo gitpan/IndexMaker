@@ -1,8 +1,8 @@
 #!/usr/local/bin/perl
-# Works with Perl4 and Perl5
+# Should work with Perl4 and Perl5
 #
-# indexmaker -- a perl script to make index.html from PDF files, HTML files
-#               and other files.
+# indexmaker -- a perl script to make index.html from PDF files, HTML files,
+#               VRML files and other files.
 #
 # by Fabrizio Pivari <pivari@geocities.com> 28 November 1997
 #
@@ -10,7 +10,7 @@
 # clearly mark an altered version.  Fixes and enhancements cheerfully 
 # accepted.
 #
-# This is version 3.1.
+# This is version 3.2
 #
 
 require "newgetopt.pl";
@@ -23,6 +23,7 @@ if ($opt_verbose) {$verbose=1}
 
 $HTMLFILES       = "";
 $PDFFILES        = "";
+$VRMLFILES       = "";
 $GRAPHICFILES    = "";
 $COMPRESSEDFILES = ""; 
 $OTHERS          = "";
@@ -49,6 +50,7 @@ print TEMP "<H1>$title<\/H1>\n";
             {
             if ($file =~ /.pdf/i) {&pdffile;}
             elsif (($file =~ /.html/i) || ($file =~ /.htm/i)) {&htmlfile;}
+            elsif (($file =~ /.vrml/i) || ($file =~ /.vrl/i)) {&vrmlfile;}
             elsif (($file =~ /.gif/i) || ($file =~ /jpg/i))
                {
                $GRAPHICFILES .= "<LI><A HREF=\"./$file\">$file<\/A></LI>\n";
@@ -79,6 +81,11 @@ if ($PDFFILES ne "")
    print TEMP qq!<A HREF="http://www.adobe.com/prodindex/acrobat/readstep.html">!;
    print TEMP qq!<IMG BORDER=0 SRC="./getacro.gif" WIDTH=88 HEIGHT=31></A>\n!;
    print TEMP "</H2>\n<UL>\n$PDFFILES\n<\/UL>\n";
+   }
+
+if ($VRMLFILES ne "")
+   {
+   print TEMP "<H2>VRML files</H2>\n<UL>\n$VRMLFILES\n<\/UL>\n";
    }
 
 if ($GRAPHICFILES ne "")
@@ -139,6 +146,45 @@ sub htmlfile
       }
    if ($i eq 0) {$HTMLFILES .=  "<LI><A HREF=\"./$file\">$file<\/A></LI>\n";}
    if($verbose eq 1) {print "Analizing HTML       file: $file\n";}
+   }
+
+sub vrmlfile
+# Extracts from VRML files Info
+   {
+   $info=""; $titlevrml="";
+   while (<STDIN>)
+      {
+# VRML 2.0
+      if(/WorldInfo/i .. /}/)
+         {
+         $i=1;
+         if(/info.*\[/i .. /\]/)
+            {
+            $_ =~ /\[(.*)\]/;
+            if ($1 ne "") {$info = &specialchar($1);}
+            }
+         if(/title.*\"/i .. /\"/)
+            {
+            $_ =~ /"(.*)"/;
+            if ($1 ne "") {$titlevrml = &specialchar($1);}
+            }
+         }
+
+# VRML 1.0
+      else
+         {
+         $i = 1;
+         if(/Info.*{/i .. /}/)
+            {
+            $_ =~ /"(.*)"/;
+            if ($1 ne "") {$info = &specialchar($1);}
+            }
+         }
+      }
+   if ($titlevrml eq "") {$titlevrml = $file;}
+   $VRMLFILES .= "<LI><A HREF=\"./$file\">$titlevrml<\/A> $info\n";
+   if ($i eq 0) {$VRMLFILES .=  "<LI><A HREF=\"./$file\">$file<\/A></LI>\n";}
+   if($verbose eq 1) {print "Analizing VRML       file: $file\n";}
    }
 
 sub specialchar {

@@ -23,3 +23,8 @@ Compressed files, Others
 
 11/28/97 Version 3.1
 Verbose option
+
+12/05/97 Version 3.2
+New input file format: VRML v 1.0 (Info node), VRML v 2.0 and 97 (WorldInfo node
+field info and title)
+Added docs/PDF.notes and docs/VRML.notes
