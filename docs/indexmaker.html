@@ -1,19 +1,19 @@
 <!-- IndexMaker: a perl script to make an index from some PDF files designed by
-Fabrizio Pivari (Pivari@geocities.com) on 11/01/97-->
+Fabrizio Pivari (Pivari@geocities.com) on 11/06/97-->
 
 <HTML>
 <HEAD>
 <META Name="Author" Content="Fabrizio Pivari">
-<TITLE>An index.html maker from PDF, HTML and other files</TITLE>
+<TITLE>An index.html maker from PDF files</TITLE>
 </HEAD>
 
 <BODY BGCOLOR="#ffffff">
 <H1>An index.html maker from PDF files</H1>
 <H2>by <A HREF="mailto:Pivari@geocities.com">Fabrizio Pivari</A></H2>
-<H4>version 2.0 1997/11/01</H4>
+<H4>version 2.1 1997/11/06</H4>
 
-IndexMaker is a simple script PERL to make an index.html file from PDF, HTML
-and other files,
+IndexMaker is a simple script PERL to make an index.html file from PDF files,
+HTML files and other files.
 It should work with PERL 4 and 5.<BR>
 It uses the /Author field and the first /Title field in every
 matched PDF files, the &ltTITLE&gt &lt;/TITLE&gt field in every matched HTML files and
@@ -45,14 +45,18 @@ example:
 What's new with version 1.1:
 <UL>
 <LI>Bug fix: now /Author field can be placed also after the first /Title field
-<LI>Special Characters: &amp -&gt &ampamp, &gt -&gt &ampgt, &lt -&gt &amplt Than
-ks to
+<LI>Special Characters: &amp -&gt &ampamp, &gt -&gt &ampgt, &lt -&gt &amplt Thanks to 
 <A HREF="mailto:A.Gale@RD.tei.ericsson.se">Gale Andrew</A>
 </UL>
 
 What's new with version 2.0:
 <UL>
 <LI>New input files format: HTML, OTHER
+</UL>
+
+What's new with version 2.1:
+<UL>
+If HTML and PDF files haven't a description the program uses the file name
 </UL>
 </BODY>
 </HTML>

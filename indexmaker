@@ -3,13 +3,13 @@
 #
 # indexmaker -- a perl script to make index.html from PDF files
 #
-# by Fabrizio Pivari <pivari@geocities.com> 1 November 1997
+# by Fabrizio Pivari <pivari@geocities.com> 15 November 1997
 #
 # Copy, use, and redistribute freely, but don't take my name off it and
 # clearly mark an altered version.  Fixes and enhancements cheerfully 
 # accepted.
 #
-# This is version 2.0.
+# This is version 2.1.
 #
 
 require "newgetopt.pl";
@@ -79,6 +79,7 @@ sub pdffile
       if (/^\/Author \((.*)\)/) {$author=&specialchar($1);}
       if((/^\/Title \((.*)\)/) && ($i ==0)) {$title=&specialchar($1); $i=1;}
       }
+   if ($title eq "") {$title=$file;}
    print qq!<LI><A HREF="./$file">$title<\/A> !;
    if ($author ne "") {print "written by $author ";}
    print qq!<IMG SRC="./pdficon.gif" WIDTH=28 HEIGHT=31>\n<\/LI>\n!;
@@ -91,11 +92,13 @@ sub htmlfile
       {
       if(/<TITLE>/i .. /<\/TITLE>/i)
          {
+         $i=1;
          s/<TITLE>/<LI><A HREF=".\/$file">/i;
          s/<\/TITLE>/<\/A>\n<\/LI>\n/i;
          print $_;
          }
       }
+   if ($i eq 0) {print qq!<LI><A HREF="./$file">$file<\/A></LI>\n!;}
    }
 
 sub specialchar {

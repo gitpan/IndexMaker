@@ -8,3 +8,6 @@ Thanks to A.Gale@RD.tei.ericsson.se (Gale Andrew)
 
 11/01/97 Version 2.0
 New input files format: HTML, OTHER 
+
+11/06/97 Version 2.1
+If HTML and PDF files haven't a description the program uses the file name
